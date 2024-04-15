@@ -1,4 +1,5 @@
 #pragma once
+#include "Transaction.cpp"
 class User
 {
 	string UserName, Password;
@@ -7,7 +8,7 @@ class User
 	double Send();
 	double Request();
 	double ViewCurrentBalance();
-	Transactions ViewHistory();
+	Transaction ViewHistory();
 
 };
 

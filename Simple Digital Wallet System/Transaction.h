@@ -12,12 +12,12 @@ class Transaction
 	int transactionID;
 	string sender, reciever;
 	float amount;
-	DATE date;
+	DATE Date;
 
 public:
-	 Transaction(string sender,string reciever, float amount,DATE date);
+	 Transaction(string currentUser,string Reciever, float money,DATE date);
 
-	 void fillData(string reciever, float amount);
+	 void fillData(string& Reciever, float& money);
 	 bool CheckBalance();
 	 Transaction CheckOut();
 	 ~Transaction();

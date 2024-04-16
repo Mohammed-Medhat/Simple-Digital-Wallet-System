@@ -1,6 +1,7 @@
 #include <iostream>
 #include<ctime>
 #include <chrono>
+#include <stack>
 using namespace std;
 
 struct DATE {
@@ -9,6 +10,7 @@ struct DATE {
 
 class Transaction
 {
+
 	int transactionID;
 	string sender, reciever;
 	float amount;
@@ -16,10 +18,17 @@ class Transaction
 
 public:
 	 Transaction(string currentUser,string Reciever, float money,DATE date);
+ 
+	 void Send(string& Reciever, float& money);
+	 void Request(string& Reciever, float& money);
+	 void RequestMessage();
 
-	 void fillData(string& Reciever, float& money);
+	 bool checkSuspendedAccounts(string Reciever);
 	 bool CheckBalance();
-	 Transaction CheckOut();
+	 void CheckOut();
+
+	
+
 	 ~Transaction();
 	
 };

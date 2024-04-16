@@ -12,22 +12,23 @@ class Transaction
 {
 
 	int transactionID;
-	string sender, reciever;
+	User sender, reciever;
 	float amount;
 	DATE Date;
+	
 
 public:
-	 Transaction(string currentUser,string Reciever, float money,DATE date);
+	 Transaction(User currentUser,User Reciever, float money,DATE date);
  
-	 void Send(string& Reciever, float& money);
-	 void Request(string& Reciever, float& money);
+	 void Send(User& Reciever, float& money);
+	 void Request(User& Reciever, float& money);
 	 void RequestMessage();
 
-	 bool checkSuspendedAccounts(string Reciever);
+	 bool checkSuspendedAccounts(User Reciever);
 	 bool CheckBalance();
 	 void CheckOut();
 
-	
+	 void displayTransactionData();
 
 	 ~Transaction();
 	

@@ -12,7 +12,7 @@ Transaction::Transaction(string currentUser, string Reciever, float money, DATE 
 
 }
 
-void Transaction::fillData(string& Reciever, float& money)
+void Transaction::Send(string& Reciever, float& money)
 {
 	string T;
 
@@ -35,7 +35,7 @@ void Transaction::fillData(string& Reciever, float& money)
 
 		if (T == "yes")
 		{
-			fillData(Reciever, money);
+			Send(Reciever, money);
 		}
 
 		else if (T == "no")
@@ -52,12 +52,13 @@ void Transaction::fillData(string& Reciever, float& money)
 	}
 }
 
+
 bool Transaction::CheckBalance()
 {
-	return(amount <= balance);
+	return(amount <= );
 }
 
-Transaction Transaction::CheckOut()
+void Transaction::CheckOut()
 {
 	DATE date = getCurrentDateTime();
 	bool T;
@@ -71,6 +72,9 @@ Transaction Transaction::CheckOut()
 	if (T == 1)
 	{
 		transactionID++;
+		//currentUser.balance -= amount
+		//recieverUser.balance += amount
+
 		userTransactions.Push_back(Transaction);
 	}
 	else
@@ -80,6 +84,34 @@ Transaction Transaction::CheckOut()
 
 }
 
+
+
+void Transaction::Request(string& Reciever, float& money)
+{
+	bool T;
+	cout << "Request will be sent to: "<<endl;
+	cin >> Reciever;
+
+	if (checkSuspendedAccounts(Reciever))
+	{
+		cout << "This account is suspended" << endl << "Do you want to continue? press 1 to continue / 0 to exit"<<endl;
+		cin >> T;
+		if (T == 1)
+			Request(Reciever, money);
+		else
+			exit; //redirect to home page
+	}
+	cout << "Enter the requested amount: "<<endl;
+	cin >> money;
+
+	cout << "Request was sent successfully";
+
+}
+
+bool Transaction::checkSuspendedAccounts(string Reciever)
+{
+
+}
 
 DATE getCurrentDateTime() {
 	DATE currentDateTime;

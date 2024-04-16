@@ -3,6 +3,15 @@
 #include "User.cpp"
 #include"Transaction.cpp"
 using namespace std;
+template <class T>
+class Node
+{
+public:
+	T value;
+	Node<T>* left, * right;
+	Node();
+	Node(T val);
+};
 class System
 {
 private:

@@ -1,16 +1,139 @@
 #include "Transaction.h"
 #include "User.h"
 
-//Transaction::Transaction(User currentUser, User Reciever, float money, DATE date)
-//{
-//
-//	transactionID = 0;
-//	sender = currentUser.sender;
-//	reciever = Reciever;
-//	amount = money;
-//	Date = date;
-//
-//}
+Transaction::Transaction(User sender, User reciever, float amount, DATE Date)
+{
+	this->sender = sender;
+	this->reciever = reciever;
+	this->amount = amount;
+	this->Date = Date;
+
+}
+
+
+User Transaction::getReciever()
+{
+	return reciever;
+}
+
+User Transaction::getSender()
+{
+	return sender;
+}
+
+float Transaction::getAmount()
+{
+	return amount;
+}
+
+
+void Transaction::Send(User& reciever, float& amount)
+{
+	string recieverName;
+	bool T;
+
+	cout << "Enter the reciever name: "<<endl;
+	cin >> recieverName;
+	reciever.setUserName(recieverName);
+	cout << "Enter the amount: " << endl;
+
+
+	if (checkSuspendedAccounts(reciever))
+	{ 
+		cout << "This account was inactive" << endl << "Do you want to continue? press 1 / 0 to exit";
+		cin >> T;
+		if (T == 1) {
+			Send(reciever, amount);
+		}
+		else
+		{
+			exit; //redirect to home page
+		}
+	}
+	else if (!CheckBalance(sender, amount))
+	{
+		cout << "Your balance is not enough" << endl << "Do you want to continue? press 1 / 0 to exit";
+		cin >> T;
+		if (T == 1) {
+			Send(reciever, amount);
+		}
+		else
+		{
+			exit; //redirect to home page
+		}
+	}
+
+	else
+	{
+		CheckOut();
+	}
+
+
+}
+
+bool Transaction::CheckBalance(User sender, float amount)
+{
+	return(sender.ViewCurrentBalance() >= amount);
+}
+
+void Transaction::sendingTransaction()
+{
+	DATE date = getCurrentDateTime();
+	cout << "Reciever: " << getReciever().getUserName() << endl;
+	cout << "Paid Money : " << getAmount() << endl;
+	cout << "Time: " << date.hour << ":" << date.min << endl;
+	cout << "Date: " << date.month << "/" << date.day << "/" << date.year << endl;
+}
+
+void Transaction::recievingTransaction()
+{
+	DATE date = getCurrentDateTime();
+	cout << "Sender: " << getSender().getUserName() << endl;
+	cout << "Recieved Money : " << getAmount() << endl;
+	cout << "Time: " << date.hour << ":" << date.min << endl;
+	cout << "Date: " << date.month << "/" << date.day << "/" << date.year << endl << endl;
+}
+
+
+
+void Transaction::CheckOut()
+{
+
+	sendingTransaction();
+	
+	bool T;
+
+
+
+	cout << "confirm transaction" << endl << "press 1 to confirm / 0 to delete transaction";
+
+	cin >> T;
+	if (T == 1)
+	{
+		transactionID++;
+
+		float SenderNewBalance = getSender().ViewCurrentBalance() - getAmount();
+		float RecieverNewBalance = getReciever().ViewCurrentBalance() + getAmount();
+
+		getSender().BalanceAfterTransaction(SenderNewBalance);
+		getReciever().BalanceAfterTransaction(RecieverNewBalance);
+
+		getSender().addTransactions(*this);
+		getReciever().addTransactions(*this);
+
+	}
+
+	else
+	{
+		exit; //redirect to home page
+	}
+	
+
+}
+
+
+
+
 //
 //void Transaction::Send(User& Reciever, float& money)
 //{

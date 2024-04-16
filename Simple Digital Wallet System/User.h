@@ -10,11 +10,12 @@ class User
 	float balance;
 
 	vector <Transaction> userTransactions;
+	
 
 	
 public:
 
-
+	User();
 	User(string UserName, string Password, float balance);
 
 	void BalanceAfterTransaction(float newBalance);

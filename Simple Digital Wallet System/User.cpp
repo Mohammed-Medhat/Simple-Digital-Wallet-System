@@ -49,9 +49,16 @@ void User::ViewHistory()
 {
 	if (!userTransactions.empty())
 	{
+		cout << "Sending Transactions: "<<endl<<"----------------";
 		for (auto& trans : userTransactions)
 		{
-			trans.displayTransactionData();
+			trans.sendingTransaction();
+		}
+
+		cout << "Recieving Transactions: " << endl << "----------------";
+		for (auto& trans : userTransactions)
+		{
+			trans.recievingTransaction();
 		}
 	}
 }

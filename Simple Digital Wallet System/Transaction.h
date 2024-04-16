@@ -18,17 +18,26 @@ class Transaction
 	
 
 public:
-	 Transaction(User currentUser,User Reciever, float money,DATE date);
+
+	 Transaction();
+	 Transaction(User sender,User reciever, float amount,DATE Date);
+
+	 User getSender();
+	 User getReciever();
+	 float getAmount();
  
-	 void Send(User& Reciever, float& money);
-	 void Request(User& Reciever, float& money);
+	 void Send(User& reciever, float& amount);
+	 void Request(User& reciever, float& amount);
 	 void RequestMessage();
 
 	 bool checkSuspendedAccounts(User Reciever);
-	 bool CheckBalance();
+	 bool CheckBalance(User sender, float amount);
 	 void CheckOut();
 
-	 void displayTransactionData();
+	 void sendingTransaction();
+	 void recievingTransaction();
+
+	 
 
 	 ~Transaction();
 	

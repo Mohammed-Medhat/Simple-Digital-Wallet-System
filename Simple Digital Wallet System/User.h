@@ -1,21 +1,29 @@
 #pragma once
 #include <iostream>
+#include"Transaction.cpp"
 #include <vector>
 class User
 {
-private:
+
 	string UserName, Password;
 	float balance;
-	vector<Transaction> userTransactions;
+	vector <Transaction> userTransactions;
 
 	
 
 protected:
-	User(string UserName, string Password, float balance);
+	
+	
 	double Send();
 	double Request();
 	double ViewCurrentBalance();
 	Transaction ViewHistory();
+	
+public:
+	User(string UserName, string Password, float balance);
+	string getUserName();
+	string getPassword();
+	float getBalance();
 	~User();
 };
 

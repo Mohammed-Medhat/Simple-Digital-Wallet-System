@@ -3,23 +3,24 @@
 #include "User.cpp"
 #include"Transaction.cpp"
 using namespace std;
-template <class T>
 class Node
 {
 public:
-	T value;
-	Node<T>* left, * right;
+	User* value;
+	Node  * left, * right;
 	Node();
-	Node(T val);
+	Node(User* val);
 };
+
 class System
 {
-private:
-	vector <User> allUsers;
+	Node *allUsers;
 	vector <Transaction> allTransactions;
 public:
 	System();
-	void Login();
+	Node *finduser(string username,string password);
+	bool isExist(string username, string password);
+	void Login(string username, string password);
 	void Register();
 	void Edite();
 	void Logout();

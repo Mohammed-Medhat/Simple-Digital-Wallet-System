@@ -6,7 +6,7 @@
 using namespace std;
 class User
 {
-
+	private:
 	string UserName, Password;
 	float balance;
 	vector <Transaction> userTransactions;
@@ -14,7 +14,7 @@ class User
 	
 
 protected:
-<<<<<<< HEAD
+
 
 	
 	
@@ -35,13 +35,10 @@ public:
 	void userData();
 	void ViewHistory();
 
-=======
-	User(string UserName, string Password, float balance);
-
 	double ViewCurrentBalance();
 	void userData();
 	void ViewHistory();
->>>>>>> 0e2c95e9ff25db2aea9316f8a23439dfbfde4dcb
+
 	~User();
 };
 

@@ -1,5 +1,5 @@
 #include "System.h"
-#include"User.cpp"
+#include"User.h"
 #include<iostream>
 
 System::System() {
@@ -37,4 +37,7 @@ bool System::isExist(string username, string password) {
 	
 
 	
+}
+System::System() {
+
 }

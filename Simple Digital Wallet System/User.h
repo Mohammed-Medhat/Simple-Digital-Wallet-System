@@ -1,5 +1,4 @@
 #include <iostream>
-#include"Transaction.cpp"
 #include <vector>
 #include "Transaction.h"
 
@@ -20,7 +19,7 @@ protected:
 	
 	double Send();
 	double Request();
-	double ViewCurrentBalance();
+	
 	Transaction ViewHistory();
 	
 public:
@@ -29,15 +28,12 @@ public:
 	string getPassword();
 	float getBalance();
 
-	User(string UserName, string Password, float balance);
+
 
 	double ViewCurrentBalance();
 	void userData();
-	void ViewHistory();
+	//void ViewHistory();
 
-	double ViewCurrentBalance();
-	void userData();
-	void ViewHistory();
 
 	~User();
 };

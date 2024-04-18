@@ -13,8 +13,12 @@ private :
 	string username;
 	string password;
 
-protected :
+public :
+	Admin();
+	Admin(string username, string password);
+
 	static map<string, User> suspended_users;
+	
 
 	void set_username(string new_name);
 	string get_username();
@@ -30,6 +34,8 @@ protected :
 	void reactivated(string name);
 
 	void view_all_transactions();
-	void edit_balance(string name,float new_balance);	
+	void edit_balance(string name,float new_balance);
+
+	~Admin();
 };
 

@@ -14,8 +14,11 @@ public:
 
 class System
 {
+public:
 	Node *allUsers;
 	vector <Transaction> allTransactions;
+	static map<string, User> CurrentUsers;
+
 public:
 	System();
 	Node *finduser(string username,string password);
@@ -26,5 +29,6 @@ public:
 	void Logout();
 	void saveData();
 	void deleteData();
+	~System();
 };
 

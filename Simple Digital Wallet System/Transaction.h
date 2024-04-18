@@ -10,9 +10,10 @@ struct DATE {
 
 class Transaction
 {
+private:
 
 	int transactionID;
-	User sender, reciever;
+	string sender, reciever;
 	float amount;
 	DATE Date;
 	
@@ -20,23 +21,18 @@ class Transaction
 public:
 
 	 Transaction();
-	 Transaction(User sender,User reciever, float amount,DATE Date);
+	 Transaction(string sender, string reciever, float amount,DATE Date);
 
-	 User getSender();
-	 User getReciever();
+
 	 float getAmount();
  
-	 void Send(User& reciever, float& amount);
-	 void Request(User& reciever, float& amount);
-	 void RequestMessage();
 
-	 bool checkSuspendedAccounts(User Reciever);
-	 bool CheckBalance(User sender, float amount);
-	 void CheckOut();
 
-	 void sendingTransaction();
-	 void recievingTransaction();
 
+
+
+	 void TransactionData();
+	 DATE getCurrentDateTime();
 	 
 
 	 ~Transaction();

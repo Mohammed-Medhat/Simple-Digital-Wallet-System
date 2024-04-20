@@ -47,7 +47,7 @@ void User::ViewHistory()
 		cout << "Your Transaction History: " << endl << "**************\n";
 
 		for (int i = 0; i < History.size(); i++) {
-			transactions.TransactionData();
+			transactions.DisplayTransactionData();
 		}
 	}
 }
@@ -62,9 +62,9 @@ void User::Send(string& reciever, float& amount)
 	bool T;
 	
 
-	auto FindingUser = sys.CurrentUsers.find(reciever);
+	auto FindingUser = UsersInSystem.AllUsers.find(reciever);
 
-	if (FindingUser == sys.CurrentUsers.end()) {
+	if (FindingUser == UsersInSystem.AllUsers.end()) {
 		cout << "The User is not found" << endl << "Do you want to continue? press 1 / 0 to exit";
 		cin >> T;
 		if (T == 1)
@@ -103,7 +103,7 @@ void User::Send(string& reciever, float& amount)
 		}
 	}
 
-	// else if ()
+	
 
 	else
 	{
@@ -137,7 +137,7 @@ void User::CheckOut(string reciever)
 	
 	if (T == 1)
 	{
-		User Reciever = sys.CurrentUsers.find(reciever);
+		User Reciever = UsersInSystem.AllUsers.find(reciever);
 		
 
 		float SenderNewBalance = ViewCurrentBalance() - transactions.getAmount();
@@ -170,7 +170,6 @@ void User::Request(string& reciever, float& amount)
 
 bool User::checkSuspendedAccounts(string Reciever)
 {
-	
-	
-	auto SuspendedUser = ad.suspended_users.find(Reciever);
+		
+	auto SuspendedUser = UsersCheckedByAdmin.suspended_users.find(Reciever);
 }

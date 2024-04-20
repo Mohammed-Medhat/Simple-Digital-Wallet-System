@@ -12,7 +12,7 @@ class Transaction
 {
 private:
 
-	int transactionID;
+	
 	string sender, reciever;
 	float amount;
 	DATE Date;
@@ -22,16 +22,8 @@ public:
 
 	 Transaction();
 	 Transaction(string sender, string reciever, float amount,DATE Date);
-
-
 	 float getAmount();
- 
-
-
-
-
-
-	 void TransactionData();
+	 void DisplayTransactionData();
 	 DATE getCurrentDateTime();
 	 
 

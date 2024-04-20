@@ -12,7 +12,7 @@ Transaction::Transaction(string sender, string reciever, float amount, DATE Date
 }
 
 
-void Transaction::TransactionData()
+void Transaction::DisplayTransactionData()
 {
 	DATE date = getCurrentDateTime();
 	cout << "sender: " << sender << endl;

@@ -17,7 +17,7 @@ class System
 public:
 	Node *allUsers;
 	vector <Transaction> allTransactions;
-	static map<string, User> CurrentUsers;
+	static map<string, User> AllUsers;
 
 public:
 	System();

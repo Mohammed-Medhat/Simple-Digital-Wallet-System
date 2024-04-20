@@ -14,38 +14,25 @@ public:
 	float balance;
 	Transaction transactions;
 	vector <Transaction> History;
-	stack<Transaction> Requests;
-	System sys;
-	Admin ad;
-	
-
+	stack<Transaction> pendeningRequests;
+	System UsersInSystem;
+	Admin UsersCheckedByAdmin;
 	
 public:
 
 	User();
 	User(string UserName, string Password, float balance);
-
-	
-
-	void BalanceAfterTransaction(float newBalance);
-
-	double ViewCurrentBalance();
-	
 	void setUserName(string UserName);
 	string getUserName();
+	double ViewCurrentBalance();
 	void userData();
-	
-
-
-	void ViewHistory();
-
 	void Send(string& reciever, float& amount);
 	void Request(string& reciever, float& amount);
 	bool checkSuspendedAccounts(string Reciever);
 	bool CheckBalance(float amount);
 	void CheckOut(string reeciever);
-
-
+	void BalanceAfterTransaction(float newBalance);
+	void ViewHistory();
 	~User();
 };
 

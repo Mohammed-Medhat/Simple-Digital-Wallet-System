@@ -17,7 +17,7 @@ public:
 	list<Transaction> pendingRequests;
 	System UsersInSystem;
 	Admin UsersCheckedByAdmin;
-
+	
 public:
 
 	User();
@@ -30,7 +30,7 @@ public:
 	void RequestMoney(string& sender, float amount);
 
 	void acceptRequest(Transaction transaction);
-
+	
 
 	bool checkSuspendedAccounts(string Reciever);
 	bool CheckBalance(float amount);

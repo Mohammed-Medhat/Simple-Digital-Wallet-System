@@ -28,8 +28,8 @@ string User::getUserName()
 
 void User::userData()
 {
-	cout << "User Name: " << getUserName() << "\t";
-	cout << "Balance: " << ViewCurrentBalance() << endl;
+	cout << "User Name: " << getUserName()<<"\t";
+	cout << "Balance: " << ViewCurrentBalance()<<endl;
 	ViewHistory();
 }
 
@@ -61,7 +61,7 @@ void User::Send(string& reciever, float& amount)
 {
 
 	bool T;
-
+	
 
 	auto FindingUser = UsersInSystem.allUsers.find(reciever);
 
@@ -110,7 +110,7 @@ void User::Send(string& reciever, float& amount)
 		}
 	}
 
-
+	
 
 	else
 	{
@@ -130,31 +130,31 @@ void User::CheckOut(string reciever)
 {
 	DATE TransactionDate = transactions.getCurrentDateTime();
 	bool T;
+	
 
 
 
-
-	cout << "Reciever: " << reciever << endl;
-	cout << "Paid Amount: " << transactions.getAmount() << endl;
+	cout << "Reciever: " << reciever<<endl;
+	cout << "Paid Amount: " << transactions.getAmount()<<endl;
 	cout << "Time: " << TransactionDate.hour << ":" << TransactionDate.min << endl;
 	cout << "Date: " << TransactionDate.month << "/" << TransactionDate.day << "/" << TransactionDate.year << endl;
 	cout << "confirm transaction" << endl << "press 1 to confirm / 0 to delete transaction";
 
 	cin >> T;
-
+	
 	if (T == 1)
 	{
 		auto R = System::allUsers.find(reciever);
 		User Reciever = R->second;
-
+		
 
 		float SenderNewBalance = ViewCurrentBalance() - transactions.getAmount();
 		float RecieverNewBalance = Reciever.ViewCurrentBalance() + transactions.getAmount();
 
 		BalanceAfterTransaction(SenderNewBalance);
-
+		
 		Reciever.BalanceAfterTransaction(RecieverNewBalance);
-
+		
 		History.push_back(transactions);
 		Reciever.History.push_back(transactions);
 
@@ -173,8 +173,8 @@ void User::CheckOut(string reciever)
 
 bool User::checkSuspendedAccounts(string Reciever)
 {
-
-	/*suspended_users.find(Reciever);*/
+		
+	 /*suspended_users.find(Reciever);*/
 	auto R = Admin::suspended_users.find(Reciever);
 	if (R == Admin::suspended_users.end())
 		return false;
@@ -242,7 +242,7 @@ void User::RequestMoney(string& sender, float amount) {
 
 	else
 	{
-
+		
 		cout << "Request is sent successfully";
 		transactions.setAmount(amount);
 		transactions.SetSender(getUserName());
@@ -251,8 +251,8 @@ void User::RequestMoney(string& sender, float amount) {
 		// display out pending request in system
 	}
 
-
-
+	
+	
 }
 
 
@@ -287,7 +287,7 @@ void User::viewPendingRequests() {
 	if (pendingRequests.empty()) {
 		cout << "No pending requests." << endl;
 	}
-	else
+	else 
 	{
 		for (auto it = pendingRequests.begin(); it != pendingRequests.end(); it++) {
 			int i = 1;
@@ -307,7 +307,7 @@ void User::viewPendingRequests() {
 				cout << "Skipping Request" << endl;
 			}
 			i++;
-
+		
 		}
 
 	}

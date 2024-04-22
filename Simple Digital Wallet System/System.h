@@ -1,28 +1,37 @@
-
-#include <vector>
+#pragma once
 #include "User.h"
+#include"Transaction.h"
+#include"Admin.h"
+
 #include<map>
+#include <vector>
+#include <iostream>
+#include <queue>
+#include <stack>
+#include <string>
+#include<deque>
 
 using namespace std;
 
 
 class System
 {
-private:
-	map<string, User> allUsers;
-	User* loggedInUser=NULL;
-	
-	
+public:
+	static map<string, User> allUsers;
+	User* loggedInUser;
+	static vector<Transaction> allTransactions;
+
 public:
 	System();
-	void addnewUser(string&, string&);
-	void addUser(string&, string&,string&, float );
-	void removeUser(const string& );
-	User* getUser(const string& username);
-	bool Login(string , string );
-	void Register(string& , string& , string& );
+	static void addnewUser(string&);
+	static void addUser(string&, string&, double);
+	static void removeUser(string&);
+	static User* getUser(string& username);
+	bool Login(string, string);
+	static void Register(string&, string&, string&);
 	void Logout();
-	void showAllUser();
+	static void showAllUser();
+	static bool search_user(string);
 	//void saveData();
 	//void deleteData();
 	~System();

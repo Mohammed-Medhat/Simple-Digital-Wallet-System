@@ -1,8 +1,8 @@
+#pragma once
 #include "Transaction.h"
-#include "User.h"
-#include "Admin.h"
 
-Transaction::Transaction(string sender, string reciever, float amount, DATE Date)
+
+Transaction::Transaction(string sender, string reciever, double amount, DATE Date)
 {
 	this->sender = sender;
 	this->reciever = reciever;
@@ -12,14 +12,14 @@ Transaction::Transaction(string sender, string reciever, float amount, DATE Date
 }
 
 
-void Transaction::DisplayTransactionData()
+void Transaction::TransactionData()
 {
 	DATE date = getCurrentDateTime();
 	cout << "sender: " << sender << endl;
-	cout << "Reciever: " <<  reciever << endl;
+	cout << "Reciever: " << reciever << endl;
 	cout << "Paid Money : " << amount << endl;
 	cout << "Time: " << date.hour << ":" << date.min << endl;
-	cout << "Date: " << date.month << "/" << date.day << "/" << date.year << endl<<"------------------------------\n";
+	cout << "Date: " << date.month << "/" << date.day << "/" << date.year << endl << "------------------------------\n";
 }
 
 

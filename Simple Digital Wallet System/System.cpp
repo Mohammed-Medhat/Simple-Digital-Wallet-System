@@ -1,14 +1,14 @@
-#include "System.h"
-#include<iostream>
+#pragma once
 #include<assert.h>
 #include <cassert>
+#include"System.h"
 
 
 
 System::System() {
-	
+
 }
-void System::addnewUser(string& username, string& email) {
+void System::addnewUser(string& username) {
     if (allUsers.find(username) != allUsers.end()) {
         cout << "User '" << username << "' already exists." << endl;
     }
@@ -16,27 +16,27 @@ void System::addnewUser(string& username, string& email) {
         cout << "add password" << endl;
         string password;
         cin >> password;
-        User user(username, email, password, 0);
+        User user(username, password, 0);
         allUsers[username] = user;
         cout << "User '" << username << "' added successfully." << endl;
     }
 
 
 }
-void System::addUser(string& username, string& email,string& password,float balance) {
+void System::addUser(string& username, string& password, double balance) {
     if (allUsers.find(username) != allUsers.end()) {
         cout << "User '" << username << "' already exists." << endl;
     }
     else {
-       
-        User user(username, email, password, balance);
+
+        User user(username, password, balance);
         allUsers[username] = user;
         cout << "User '" << username << "' added successfully." << endl;
     }
 
 }
 
-void System::removeUser(const string& username)
+void System::removeUser(string& username)
 {
     auto it = allUsers.find(username);
     if (it != allUsers.end()) {
@@ -47,7 +47,7 @@ void System::removeUser(const string& username)
         cout << "User '" << username << "' not found." << endl;
     }
 }
-User* System::getUser(const string& username) {
+User* System::getUser(string& username) {
     auto it = allUsers.find(username);
     if (it != allUsers.end()) {
         return &(it->second);
@@ -59,36 +59,48 @@ User* System::getUser(const string& username) {
 }
 void System::showAllUser() {
     cout << "All usernames:" << endl;
-    for (const auto& pair : allUsers) { 
-        cout << pair.first << endl; 
+    for (const auto& pair : allUsers) {
+        cout << pair.first << endl;
     }
 }
 
-void System::Register(string& username,string& email,string& password) {
-    bool flag=1;
+bool System::search_user(string username)
+{
+    map<string, User>::iterator it;
+    auto it = allUsers.find(username);
+    if (it != allUsers.end()) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
+void System::Register(string& username, string& email, string& password) {
+    bool flag = 1;
     while (flag) {
         if (allUsers.find(username) != allUsers.end()) {
             cout << "User '" << username << "' already exists." << endl;
-            cout << "press 0 to exit and 1 to continue " << endl;
-            cin >> flag  ;
+            cout << "press 0 to exit and 1 to retry " << endl;
+            cin >> flag;
             if (!flag)
                 break;
         }
         else {
-            User user(username, email, password, 0);
+            User user(username, password, 0);
             allUsers[username] = user;
             cout << "User '" << username << "' registered successfully." << endl;
             break;
         }
     }
-    
+
 }
 
 
 bool System::Login(string username, string password) {
     auto it = allUsers.find(username);
-    if (it != allUsers.end() && it->second.getPassword() == password) {
-        loggedInUser = &(it->second); 
+    if (it != allUsers.end() && it->second.Password == password) {
+        loggedInUser = &(it->second);
         cout << "User '" << username << "' logged in successfully." << endl;
         return true;
     }
@@ -98,11 +110,11 @@ bool System::Login(string username, string password) {
     }
 }
 void System::Logout() {
-    
-        loggedInUser = nullptr; 
-        cout << "User logged out successfully." << endl;
+
+    loggedInUser = nullptr;
+    cout << "User logged out successfully." << endl;
 
 }
 System::~System(void) {
-	
+
 }

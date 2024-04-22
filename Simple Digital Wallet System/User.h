@@ -1,9 +1,4 @@
-#include <iostream>
-#include <vector>
-#include "Transaction.h"
-#include <map>
-#include <stack>
-#include "Admin.h"
+#pragma once
 #include "System.h"
 
 using namespace std;
@@ -11,28 +6,40 @@ class User
 {
 public:
 	string UserName, Password;
-	float balance;
+	double balance;
 	Transaction transactions;
 	vector <Transaction> History;
-	stack<Transaction> pendeningRequests;
-	System UsersInSystem;
-	Admin UsersCheckedByAdmin;
-	
+	stack<Transaction> Requests;
+
+
+
 public:
 
-	User();
-	User(string UserName, string Password, float balance);
+	User() = default;
+	User(string UserName, string Password, double balance);
+
+
+
+	void BalanceAfterTransaction(double newBalance);
+
+	double ViewCurrentBalance();
+
+	void set_balance(double new_balance);
+	void set_password(string new_pass);
 	void setUserName(string UserName);
 	string getUserName();
-	double ViewCurrentBalance();
 	void userData();
-	void Send(string& reciever, float& amount);
-	void Request(string& reciever, float& amount);
-	bool checkSuspendedAccounts(string Reciever);
-	bool CheckBalance(float amount);
-	void CheckOut(string reeciever);
-	void BalanceAfterTransaction(float newBalance);
+
+
+
 	void ViewHistory();
+
+	void Send(string& reciever, double& amount);
+	void Request(string& reciever, double& amount);
+	bool checkSuspendedAccounts(string Reciever);
+	bool CheckBalance(double amount);
+	void CheckOut(string reeciever);
+
+
 	~User();
 };
-

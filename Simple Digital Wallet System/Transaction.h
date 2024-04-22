@@ -1,33 +1,35 @@
-#include <iostream>
+#pragma once
+#include "System.h"
 #include<ctime>
 #include <chrono>
-#include <stack>
 using namespace std;
 
 struct DATE {
-	int hour,min, day, month, year;
+	int hour, min, day, month, year;
+
+
+
 };
 
 class Transaction
 {
-private:
+public:
 
-	
+	int transactionID;
 	string sender, reciever;
-	float amount;
+	double amount;
 	DATE Date;
-	
+
 
 public:
 
-	 Transaction();
-	 Transaction(string sender, string reciever, float amount,DATE Date);
-	 float getAmount();
-	 void DisplayTransactionData();
-	 DATE getCurrentDateTime();
-	 
+	Transaction();
+	Transaction(string sender, string reciever, double amount, DATE Date);
+	double getAmount();
+	void TransactionData();
+	DATE getCurrentDateTime();
 
-	 ~Transaction();
-	
+
+	~Transaction();
+
 };
-

@@ -1,7 +1,9 @@
 #pragma once
-#include "System.h"
+//#include "System.h"
 #include<ctime>
 #include <chrono>
+#include<iostream>
+
 using namespace std;
 
 struct DATE {
@@ -23,7 +25,7 @@ public:
 
 public:
 
-	Transaction();
+	
 	Transaction(string sender, string reciever, double amount, DATE Date);
 	double getAmount();
 	void TransactionData();

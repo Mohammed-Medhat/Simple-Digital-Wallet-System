@@ -11,6 +11,11 @@ Transaction::Transaction(string sender, string reciever, double amount, DATE Dat
 
 }
 
+double Transaction::getAmount()
+{
+	return 0.0;
+}
+
 
 void Transaction::TransactionData()
 {
@@ -40,4 +45,7 @@ DATE Transaction::getCurrentDateTime() {
 	currentDateTime.year = 1900 + ltm->tm_year; // Years since 1900
 
 	return currentDateTime;
+}
+Transaction::~Transaction(void) {
+
 }

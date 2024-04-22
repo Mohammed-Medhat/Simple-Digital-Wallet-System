@@ -2,9 +2,10 @@
 #include<iostream>
 #include"System.cpp"
 using namespace std;
-
 System sys;
 Admin aali("admin", "admin");
+void home_page();
+void admin(Admin ali);
 void user(User ali)
 {
 	int choice, choice2;
@@ -211,8 +212,8 @@ void admin(Admin ali) {
 	}
 }
 
-
 int main() {
+	
 	User ali("ali", "123456", 1200);
 	System::allUsers[ali.getUserName()] = ali;
 	home_page();

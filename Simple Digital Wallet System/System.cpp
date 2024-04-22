@@ -3,7 +3,7 @@
 #include <cassert>
 #include"System.h"
 
-
+using namespace std;
 
 System::System() {
 
@@ -67,7 +67,7 @@ void System::showAllUser() {
 bool System::search_user(string username)
 {
     map<string, User>::iterator it;
-    auto it = allUsers.find(username);
+     it = allUsers.find(username);
     if (it != allUsers.end()) {
         return true;
     }

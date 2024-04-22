@@ -4,6 +4,7 @@
 using namespace std;
 User::User()
 {
+
 }
 User::User(string UserName, string Password, double balance)
 {

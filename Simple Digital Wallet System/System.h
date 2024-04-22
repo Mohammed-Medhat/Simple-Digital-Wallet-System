@@ -1,8 +1,4 @@
 #pragma once
-#include "User.h"
-#include"Transaction.h"
-#include"Admin.h"
-
 #include<map>
 #include <vector>
 #include <iostream>
@@ -10,6 +6,10 @@
 #include <stack>
 #include <string>
 #include<deque>
+#include "User.h"
+#include"Transaction.h"
+#include"Admin.h"
+
 
 using namespace std;
 

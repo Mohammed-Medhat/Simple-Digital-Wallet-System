@@ -1,7 +1,7 @@
 #pragma once
 #include "Admin.h"
 
-//#include "Transaction.h"
+
 Admin::Admin()
 {
 	username = "admin";
@@ -14,9 +14,6 @@ Admin::Admin(string name, string pass)
 	password = pass;
 }
 
-Admin::~Admin()
-{
-}
 
 void Admin::set_username(string new_name)
 {
@@ -25,7 +22,7 @@ void Admin::set_username(string new_name)
 
 string Admin::get_username()
 {
-	return username;
+	return this->username;
 }
 
 void Admin::set_password(string new_pass)
@@ -35,7 +32,7 @@ void Admin::set_password(string new_pass)
 
 string Admin::get_password()
 {
-	return password;
+	return this->password;
 }
 
 
@@ -185,3 +182,6 @@ void Admin::edit_balance()
 
 
 
+Admin::~Admin(void)
+{
+}

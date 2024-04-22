@@ -1,6 +1,6 @@
 #pragma once
 #include "system.h"
-
+#include <iostream>
 
 using namespace std;
 
@@ -10,11 +10,11 @@ private:
 	string username;
 	string password;
 public:
-	static map<string, User> suspended_users;
+	static map<string,User> suspended_users;
 
 	Admin();
 	Admin(string, string);
-	~Admin();
+	
 
 	void set_username(string new_name);
 	string get_username();
@@ -33,6 +33,8 @@ public:
 	void reactivated();
 
 	void view_all_transactions();
+	
 	void edit_balance();
+	~Admin();
 };
 

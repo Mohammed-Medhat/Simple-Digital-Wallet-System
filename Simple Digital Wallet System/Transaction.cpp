@@ -1,8 +1,7 @@
-#pragma once
 #include "Transaction.h"
 
 
-Transaction::Transaction(string sender, string reciever, double amount, DATE Date)
+Transaction::Transaction(string sender, string reciever, float amount, DATE Date)
 {
 	this->sender = sender;
 	this->reciever = reciever;
@@ -11,13 +10,38 @@ Transaction::Transaction(string sender, string reciever, double amount, DATE Dat
 
 }
 
-double Transaction::getAmount()
+void Transaction::setAmount(float amount)
 {
-	return 0.0;
+	this->amount = amount;
+}
+
+float Transaction::getAmount()
+{
+	return amount;
+}
+
+void Transaction::SetSender(string sender)
+{
+	this->sender = sender;
+}
+
+void Transaction::SetSender(string reciever)
+{
+	this->reciever = reciever;
+}
+
+string Transaction::getSender()
+{
+	return sender;
+}
+
+string Transaction::getReciever()
+{
+	return reciever;
 }
 
 
-void Transaction::TransactionData()
+void Transaction::DisplayTransactionData()
 {
 	DATE date = getCurrentDateTime();
 	cout << "sender: " << sender << endl;
@@ -28,8 +52,22 @@ void Transaction::TransactionData()
 }
 
 
+void Transaction::pendingRequest()
+{
+	DATE date = getCurrentDateTime();
+	cout << "Sender :" << getSender() << endl;
+	cout << "Amount: " << getAmount() << endl;
+	cout << "Time: " << date.hour << ":" << date.min << endl;
+	cout << "Date: " << date.month << "/" << date.day << "/" << date.year << endl;
+}
 
-// system Transactions  send + recievce
+
+
+
+
+
+
+
 
 
 DATE Transaction::getCurrentDateTime() {
@@ -37,15 +75,12 @@ DATE Transaction::getCurrentDateTime() {
 	time_t now = time(0);
 	tm* ltm = localtime(&now);
 
-	// Set the current date and time components
+
 	currentDateTime.hour = ltm->tm_hour;
 	currentDateTime.min = ltm->tm_min;
 	currentDateTime.day = ltm->tm_mday;
-	currentDateTime.month = 1 + ltm->tm_mon; // Month is 0-based, so add 1
-	currentDateTime.year = 1900 + ltm->tm_year; // Years since 1900
+	currentDateTime.month = 1 + ltm->tm_mon;
+	currentDateTime.year = 1900 + ltm->tm_year;
 
 	return currentDateTime;
-}
-Transaction::~Transaction(void) {
-
 }

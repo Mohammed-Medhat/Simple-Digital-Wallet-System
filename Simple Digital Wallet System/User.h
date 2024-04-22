@@ -1,45 +1,43 @@
-#pragma once
-#include "System.h"
+#include <iostream>
+#include <vector>
+#include "Transaction.h"
+#include <map>
+#include <list>
+#include "Admin.h"
+
 
 using namespace std;
 class User
 {
 public:
 	string UserName, Password;
-	double balance;
+	float balance;
 	Transaction transactions;
 	vector <Transaction> History;
-	stack<Transaction> Requests;
-
-
-
+	list<Transaction> pendingRequests;
+	System UsersInSystem;
+	Admin UsersCheckedByAdmin;
+	
 public:
 
-	User() = default;
-	User(string UserName, string Password, double balance);
-
-
-
-	void BalanceAfterTransaction(double newBalance);
-
-	double ViewCurrentBalance();
-
-	void set_balance(double new_balance);
-	void set_password(string new_pass);
+	User();
+	User(string UserName, string Password, float balance);
 	void setUserName(string UserName);
 	string getUserName();
+	double ViewCurrentBalance();
 	void userData();
+	void Send(string& reciever, float& amount);
+	void RequestMoney(string& sender, float amount);
 
+	void acceptRequest(Transaction transaction);
+	
 
-
-	void ViewHistory();
-
-	void Send(string& reciever, double& amount);
-	void Request(string& reciever, double& amount);
 	bool checkSuspendedAccounts(string Reciever);
-	bool CheckBalance(double amount);
+	bool CheckBalance(float amount);
 	void CheckOut(string reeciever);
-
-
+	void BalanceAfterTransaction(float newBalance);
+	void declineRequest(Transaction transaction);
+	void viewPendingRequests();
+	void ViewHistory();
 	~User();
 };

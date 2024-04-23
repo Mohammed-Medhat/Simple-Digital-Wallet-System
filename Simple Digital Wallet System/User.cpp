@@ -21,3 +21,6 @@ float User::getBalance()
 {
 	return balance;
 }
+User::~User(void) {
+	cout << "end";
+}

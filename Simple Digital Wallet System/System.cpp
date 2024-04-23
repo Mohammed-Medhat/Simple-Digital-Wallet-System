@@ -1,5 +1,4 @@
 #include "System.h"
-#include"User.h"
 #include<iostream>
 
 System::System() {

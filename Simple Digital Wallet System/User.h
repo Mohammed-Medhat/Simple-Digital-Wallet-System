@@ -1,6 +1,6 @@
 #include <iostream>
 #include <vector>
-#include "Transaction.h"
+//#include "Transaction.h"
 
 using namespace std;
 class User
@@ -8,7 +8,7 @@ class User
 	private:
 	string UserName, Password;
 	float balance;
-	vector <Transaction> userTransactions;
+	//vector <Transaction> userTransactions;
 
 	
 
@@ -20,7 +20,7 @@ protected:
 	double Send();
 	double Request();
 	
-	Transaction ViewHistory();
+	//Transaction ViewHistory();
 	
 public:
 	User(string UserName, string Password, float balance);

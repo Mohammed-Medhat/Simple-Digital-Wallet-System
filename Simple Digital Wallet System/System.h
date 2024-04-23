@@ -1,5 +1,6 @@
 #pragma once
 #include<map>
+#include <fstream>
 #include <vector>
 #include <iostream>
 #include <queue>
@@ -32,6 +33,8 @@ public:
 	void Logout();
 	static void showAllUser();
 	static bool search_user(string);
+	
+	static map<std::string, User> loadUsersFromFile(const std::string& filename);
 	//void saveData();
 	//void deleteData();
 	~System();

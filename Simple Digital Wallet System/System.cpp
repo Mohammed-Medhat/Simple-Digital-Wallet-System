@@ -4,7 +4,8 @@
 #include"System.h"
 
 using namespace std;
-
+map<string, User> System::allUsers;
+vector<Transaction> System::allTransactions;
 System::System() {
 
 }
@@ -74,6 +75,32 @@ bool System::search_user(string username)
     else {
         return false;
     }
+}
+
+
+
+map<std::string, User> System::loadUsersFromFile(const std::string& filename)
+{
+    std::map<std::string, User> users;
+    std::ifstream ifs(filename);
+    if (!ifs) {
+        std::cerr << "Error: Failed to open file for reading." << std::endl;
+        return users;
+    }
+
+    std::string line;
+    while (std::getline(ifs, line)) {
+        size_t pos = line.find(':');
+        if (pos != std::string::npos) {
+            std::string username = line.substr(0, pos);
+            User user;
+            user.deserialize(ifs);
+            users[username] = user;
+        }
+    }
+
+    ifs.close();
+    return users;
 }
 
 void System::Register(string& username, string& password, double balance) {

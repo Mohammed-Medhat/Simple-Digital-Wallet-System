@@ -1,11 +1,14 @@
 #pragma once
 #include <iostream>
+#include <fstream>
 #include <vector>
 #include "Transaction.h"
 #include <map>
 #include <list>
 #include "Admin.h"
 #include "System.h"
+#include <string>
+#include<algorithm>
 
 
 using namespace std;
@@ -31,7 +34,7 @@ public:
 	void userData();
 	void Send(string& reciever, double& amount);
 	void RequestMoney(string& sender, double amount);
-
+	void serialize(string);
 	void acceptRequest(Transaction transaction);
 	
 

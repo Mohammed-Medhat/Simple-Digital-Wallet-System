@@ -2,7 +2,7 @@
 #include "Admin.h"
 
 
-
+map<string, User> Admin::suspended_users;
 Admin::Admin()
 {
 	username = "admin";

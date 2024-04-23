@@ -1,6 +1,17 @@
 #pragma once
 #include "Transaction.h"
 
+Transaction::Transaction()
+{
+	
+	this->sender = "invalid";
+	this->reciever = "invalid";
+	this->amount = 0;
+	
+
+
+}
+
 Transaction::Transaction(string sender, string reciever, double amount, DATE Date)
 {
 	this->sender = sender;
@@ -9,6 +20,13 @@ Transaction::Transaction(string sender, string reciever, double amount, DATE Dat
 	this->Date = Date;
 
 }
+
+//bool Transaction::operator==(const Transaction& other) const
+//{
+//	return sender == other.sender && reciever == other.reciever && amount == other.amount;
+//
+//}
+
 
 void Transaction::setAmount(double amount)
 {
@@ -73,5 +91,15 @@ DATE Transaction::getCurrentDateTime() {
 	currentDateTime.year = 1900 + ltm.tm_year;
 
 	return currentDateTime;
+}
+
+string Transaction::serializeToString()
+{
+	return sender + "|" + reciever + "|" + std::to_string(amount) + "|" + Date.serializeToString();
+}
+
+
+Transaction::~Transaction()
+{
 }
 

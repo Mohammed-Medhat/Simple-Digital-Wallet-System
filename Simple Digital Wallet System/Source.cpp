@@ -13,7 +13,7 @@ void user(User ali)
 {
 	int choice, choice2;
 	cout << "Welcome!" << endl;
-	cout << "Pleaes Enter : " << endl;
+	cout << "Please Enter : " << endl;
 	cout << "1-for Sending Money" << endl;
 	cout << "2-for Requesting Money" << endl;
 	cout << "3-for Editing Username or Password" << endl;
@@ -83,64 +83,6 @@ void user(User ali)
 		user(ali);
 	}
 }
-void home_page() {
-
-	int choice;
-	cout << "Welcome!" << endl;
-	cout << "Pleaes Enter : " << endl;
-	cout << "1-to Log-in as User" << endl;
-	cout << "2-to Log-in as Admin" << endl;
-	cout << "3-for Registering" << endl;
-	cout << "4-to Exit" << endl;
-
-
-	cin >> choice;
-	if (choice == 4) {
-		return;
-	}
-	else if (choice == 1) {
-		string name, password;
-		cout << "please enter your name";
-		cin >> name;
-		cout << "please enter your password";
-		cin >> password;
-		sys.Login(name, password);
-		user(sys.allUsers[name]);
-	}
-	else if (choice == 2)
-	{
-		string name, password;
-		cout << "please enter your name";
-		cin >> name;
-		cout << "please enter your password";
-		cin >> password;
-
-		if (sys.Login(name, password))
-		{
-			admin(aali);
-		}
-		else
-		{
-			home_page();
-		}
-
-	}
-	else if (choice == 3)
-	{
-		string name, password;
-		cout << "please enter your name";
-		cin >> name;
-		cout << "please enter your password";
-		cin >> password;
-		cout << "please enter your balance";
-		//sys.Register(name, password, balance);
-	}
-	else
-	{
-		cout << "invalid choice";
-		home_page();
-	}
-}
 void admin(Admin ali) {
 	int choice;
 	cout << "please Enter :" << endl;
@@ -158,18 +100,18 @@ void admin(Admin ali) {
 		ali.view_Accounts_Data();
 	}
 	else if (choice == 2) {
-		int choice2;
+		int choice1;
 		cout << "1- for editing user name  " << endl;
 		cout << "2- for editing password  " << endl;
 		cout << "3- for editing balance" << endl;
-		cin >> choice2;
-		if (choice2 == 1) {
+		cin >> choice1;
+		if (choice1 == 1) {
 			ali.edit_username();
 		}
-		else if (choice2 == 2) {
+		else if (choice1 == 2) {
 			ali.edit_password();
 		}
-		else if (choice2 == 3) {
+		else if (choice1 == 3) {
 			ali.edit_balance();
 		}
 	}
@@ -216,8 +158,71 @@ void admin(Admin ali) {
 		admin(ali);
 	}
 }
+void home_page() {
 
-int main() {
+	int choice;
+	cout << "Welcome!" << endl;
+	cout << "Pleaes Enter : " << endl;
+	cout << "1-to Log-in as User" << endl;
+	cout << "2-to Log-in as Admin" << endl;
+	cout << "3-for Registering" << endl;
+	cout << "4-to Exit" << endl;
+
+	cin >> choice;
+	string name, password;
+	switch (choice) {
+	case 1:
+	{
+		cout << "please enter your name";
+		cin >> name;
+		cout << "please enter your password";
+		cin >> password;
+		sys.Login(name, password);
+		user(sys.allUsers[name]);
+		break;
+	}
+	case 2: {
+		cout << "please enter your name";
+		cin >> name;
+		cout << "please enter your password";
+		cin >> password;
+
+		if (sys.Login(name, password))
+		{
+			admin(aali);
+		}
+		else
+		{
+			home_page();
+		}
+		break;
+	}
+	case 3: {
+
+		cout << "please enter your name";
+		cin >> name;
+		cout << "please enter your password";
+		cin >> password;
+		cout << "please enter your balance";
+		//sys.Register(name, password, balance);
+		break;
+	}
+	case 4:
+	{
+		return;
+		break;
+	}
+	default: {
+		cout << "invalid choice";
+		home_page();
+	}
+
+	}
+
+}
+
+
+void main() {
 	
 	User ali("ali", "123456", 1200);
 	System::allUsers[ali.getUserName()] = ali;

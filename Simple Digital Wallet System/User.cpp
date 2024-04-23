@@ -1,6 +1,10 @@
 #pragma once
 #include "User.h"
 
+User::User()
+{
+}
+
 User::User(string UserName, string Password, double balance)
 {
 	this->UserName = UserName;
@@ -49,38 +53,13 @@ void User::userData()
 	cout << "Balance: " << ViewCurrentBalance()<<endl;
 	ViewHistory();
 }
-
-
-
-
-
-void User::ViewHistory()
-{
-	if (History.empty()) {
-		cout << "There is no transaction made/n";
-		return;
-	}
-	else {
-		cout << "Your Transaction History: " << endl << "**************\n";
-
-		for (int i = 0; i < History.size(); i++) {
-			transactions.DisplayTransactionData();
-		}
-	}
-}
-
-
-
-
-// display out the message to enter username and amount - Entering username and amount in system
-
 void User::Send(string& reciever, double& amount)
 {
 
 	bool T;
-	
+
 	map<string, User>::iterator FindingUser;
-	 FindingUser = System::allUsers.find(reciever);
+	FindingUser = System::allUsers.find(reciever);
 
 	if (FindingUser == System::allUsers.end()) {
 		cout << "The User is not found" << endl << "Do you want to continue? press 1 / 0 to exit";
@@ -127,7 +106,7 @@ void User::Send(string& reciever, double& amount)
 		}
 	}
 
-	
+
 
 	else
 	{
@@ -136,6 +115,41 @@ void User::Send(string& reciever, double& amount)
 
 
 }
+
+
+bool User::checkSuspendedAccounts(string Reciever)
+{
+	map<string, User>::iterator R;
+	R = Admin::suspended_users.find(Reciever);
+	if (R == Admin::suspended_users.end())
+		return false;
+	else
+		return true;
+
+}
+
+
+void User::ViewHistory()
+{
+	if (History.empty()) {
+		cout << "There is no transaction made/n";
+		return;
+	}
+	else {
+		cout << "Your Transaction History: " << endl << "**************\n";
+
+		for (int i = 0; i < History.size(); i++) {
+			transactions.DisplayTransactionData();
+		}
+	}
+}
+
+
+
+
+// display out the message to enter username and amount - Entering username and amount in system
+
+
 
 bool User::CheckBalance(double amount)
 {
@@ -189,16 +203,7 @@ void User::CheckOut(string reciever)
 
 
 
-bool User::checkSuspendedAccounts(string Reciever)
-{
-	map<string, User>::iterator R;
-	 R = Admin::suspended_users.find(Reciever);
-	if (R == Admin::suspended_users.end())
-		return false;
-	else
-		return true;
 
-}
 
 
 
@@ -272,9 +277,33 @@ void User::RequestMoney(string& sender, double amount) {
 	
 }
 
+void User::serialize(string filename)
+{
+	std::ofstream ofs(filename);
+	if (!ofs) {
+		std::cerr << "Error: Failed to open file for writing." << std::endl;
+		return;
+	}
 
+	// Write user data to the file
+	ofs << UserName << "," << Password << "," << balance << "\n";
 
+	// Write History
+	ofs << "History:";
+	for (const auto& transaction : History) {
+		ofs << transaction.serializeToString() << ";";
+	}
+	ofs << "\n";
 
+	// Write pendingRequests
+	ofs << "PendingRequests:";
+	for (const auto& request : pendingRequests) {
+		ofs << request.serializeToString() << ";";
+	}
+	ofs << "\n";
+
+	ofs.close();
+}
 
 
 void User::acceptRequest(Transaction transactions) {

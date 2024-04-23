@@ -1,7 +1,10 @@
+#pragma once
 #include <iostream>
 #include<ctime>
 #include <chrono>
 #include <stack>
+#define _CRT_SECURE_NO_WARNINGS
+
 using namespace std;
 
 struct DATE {
@@ -10,26 +13,30 @@ struct DATE {
 
 class Transaction
 {
-
-	int transactionID;
-	string sender, reciever;
-	float amount;
-	DATE Date;
-
 public:
-	 Transaction(string currentUser,string Reciever, float money,DATE date);
- 
-	 void Send(string& Reciever, float& money);
-	 void Request(string& Reciever, float& money);
-	 void RequestMessage();
-
-	 bool checkSuspendedAccounts(string Reciever);
-	 bool CheckBalance();
-	 void CheckOut();
 
 	
+	string sender, reciever;
+	double amount;
+	DATE Date;
+	
+
+public:
+
+	 Transaction();
+	 Transaction(string sender, string reciever, double amount,DATE Date);
+
+	 void SetSender(string sender);
+	 string getSender();
+	 void SetReciever(string reciever);
+	 string getReciever();
+	 void setAmount(double amount);
+	 double getAmount();
+	 void DisplayTransactionData();
+	 void pendingRequest();
+	 DATE getCurrentDateTime();
+	 
 
 	 ~Transaction();
 	
 };
-

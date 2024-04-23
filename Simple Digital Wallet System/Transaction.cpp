@@ -1,129 +1,77 @@
+#pragma once
 #include "Transaction.h"
-#include "User.h"
 
-Transaction::Transaction(string currentUser, string Reciever, float money, DATE date)
+Transaction::Transaction(string sender, string reciever, double amount, DATE Date)
 {
-
-	transactionID = 0;
-	sender = currentUser;
-	reciever = Reciever;
-	amount = money;
-	Date = date;
+	this->sender = sender;
+	this->reciever = reciever;
+	this->amount = amount;
+	this->Date = Date;
 
 }
 
-void Transaction::Send(string& Reciever, float& money)
+void Transaction::setAmount(double amount)
 {
-	string T;
+	this->amount = amount;
+}
 
-	cout << "Enter the reciever Name:"<<endl;
-	cin >> Reciever;
+double Transaction::getAmount()
+{
+	return amount;
+}
 
-	cout << "Enter the amount:" << endl;
-	cin >> money;
-
-	if (!CheckBalance())
-	{
-		cout << "There is not enough balance."<<endl<<"Do you want to contine? yes/no";
-		cin >> T;
-
-		while (T != "yes" || T != "no")
-		{
-			cout << "invalid";
-			cin >> T;
-		}
-
-		if (T == "yes")
-		{
-			Send(Reciever, money);
-		}
-
-		else if (T == "no")
-		{
-			exit; //redirect url to home page
-		}
-		
-	}
-
-
-	else
-	{
-		CheckOut();
-	}
+void Transaction::SetSender(string sender)
+{
+	this->sender = sender;
 }
 
 
-bool Transaction::CheckBalance()
+
+ string Transaction::getSender()
 {
-	return(amount <= );
+	return sender;
 }
 
-void Transaction::CheckOut()
+ string Transaction::getReciever()
+ {
+	 return reciever;
+ }
+
+
+
+void Transaction::DisplayTransactionData()
 {
 	DATE date = getCurrentDateTime();
-	bool T;
+	cout << "sender: " << sender << endl;
+	cout << "Reciever: " <<  reciever << endl;
+	cout << "Paid Money : " << amount << endl;
+	cout << "Time: " << date.hour << ":" << date.min << endl;
+	cout << "Date: " << date.month << "/" << date.day << "/" << date.year << endl<<"------------------------------\n";
+}
 
-	cout << "Receiver: " << reciever<<endl;
-	cout << "paid money: " << amount<<endl;
-	cout << "Time: " << date.hour << ":" << date.min<<endl;
+
+void Transaction::pendingRequest()
+{
+	DATE date = getCurrentDateTime();
+	cout << "Sender :" << getSender() << endl;
+	cout << "Amount: " << getAmount() << endl;
+	cout << "Time: " << date.hour << ":" << date.min << endl;
 	cout << "Date: " << date.month << "/" << date.day << "/" << date.year << endl;
-
-	cout << "confirm transaction" << endl << "press 1 to confirm / 0 to delete transaction";
-	if (T == 1)
-	{
-		transactionID++;
-		//currentUser.balance -= amount
-		//recieverUser.balance += amount
-
-		userTransactions.Push_back(Transaction);
-	}
-	else
-	{
-		exit; // redirect to transaction page 
-	}
-
 }
 
 
-
-void Transaction::Request(string& Reciever, float& money)
-{
-	bool T;
-	cout << "Request will be sent to: "<<endl;
-	cin >> Reciever;
-
-	if (checkSuspendedAccounts(Reciever))
-	{
-		cout << "This account is suspended" << endl << "Do you want to continue? press 1 to continue / 0 to exit"<<endl;
-		cin >> T;
-		if (T == 1)
-			Request(Reciever, money);
-		else
-			exit; //redirect to home page
-	}
-	cout << "Enter the requested amount: "<<endl;
-	cin >> money;
-
-	cout << "Request was sent successfully";
-
-}
-
-bool Transaction::checkSuspendedAccounts(string Reciever)
-{
-
-}
-
-DATE getCurrentDateTime() {
+DATE Transaction::getCurrentDateTime() {
 	DATE currentDateTime;
 	time_t now = time(0);
-	tm* ltm = localtime(&now);
+	tm ltm;
+	localtime_s(&ltm, &now); // Correct usage of localtime_s
 
-	// Set the current date and time components
-	currentDateTime.hour = ltm->tm_hour;
-	currentDateTime.min = ltm->tm_min;
-	currentDateTime.day = ltm->tm_mday;
-	currentDateTime.month = 1 + ltm->tm_mon; // Month is 0-based, so add 1
-	currentDateTime.year = 1900 + ltm->tm_year; // Years since 1900
+	currentDateTime.hour = ltm.tm_hour;
+	currentDateTime.min = ltm.tm_min;
+	currentDateTime.day = ltm.tm_mday;
+	currentDateTime.month = 1 + ltm.tm_mon;
+	currentDateTime.year = 1900 + ltm.tm_year;
 
 	return currentDateTime;
 }
+

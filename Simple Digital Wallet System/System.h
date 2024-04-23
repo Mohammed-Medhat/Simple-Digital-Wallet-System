@@ -1,30 +1,38 @@
 #pragma once
+#include<map>
 #include <vector>
-#include "User.cpp"
-#include"Transaction.cpp"
+#include <iostream>
+#include <queue>
+#include <stack>
+#include <string>
+#include<deque>
+#include "User.h"
+#include"Transaction.h"
+#include"Admin.h"
+
+
 using namespace std;
-class Node
-{
-public:
-	User* value;
-	Node  * left, * right;
-	Node();
-	Node(User* val);
-};
+class User;
 
 class System
 {
-	Node *allUsers;
-	vector <Transaction> allTransactions;
+public:
+	static map<string, User> allUsers;
+	User* loggedInUser;
+	static vector<Transaction> allTransactions;
+
 public:
 	System();
-	Node *finduser(string username,string password);
-	bool isExist(string username, string password);
-	void Login(string username, string password);
-	void Register();
-	void Edite();
+	static void addnewUser(string&);
+	static void addUser(string&, string&, double);
+	static void removeUser(string&);
+	static User* getUser(string& username);
+	bool Login(string, string);
+	static void Register(string& username, string& password, double balance);
 	void Logout();
-	void saveData();
-	void deleteData();
+	static void showAllUser();
+	static bool search_user(string);
+	//void saveData();
+	//void deleteData();
+	~System();
 };
-

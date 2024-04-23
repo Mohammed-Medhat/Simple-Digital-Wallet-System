@@ -34,7 +34,8 @@ public:
 	static void showAllUser();
 	static bool search_user(string);
 	
-	static map<std::string, User> loadUsersFromFile(const std::string& filename);
+	static void readUsersFromFile(const std::string& filename);
+	static void writeUsersToFile(const std::string& filename);
 	//void saveData();
 	//void deleteData();
 	~System();

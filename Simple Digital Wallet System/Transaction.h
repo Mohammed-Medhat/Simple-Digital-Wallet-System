@@ -76,7 +76,8 @@ public:
 	 void DisplayTransactionData();
 	 void pendingRequest();
 	 DATE getCurrentDateTime();
-	 string serializeToString();
+	 string serializeToString() const;
+	 static Transaction deserializeFromString(string& str);
 
 	 ~Transaction();
 	

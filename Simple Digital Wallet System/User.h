@@ -9,6 +9,7 @@
 #include "System.h"
 #include <string>
 #include<algorithm>
+#include <sstream>
 
 
 using namespace std;
@@ -34,10 +35,10 @@ public:
 	void userData();
 	void Send(string& reciever, double& amount);
 	void RequestMoney(string& sender, double amount);
-	void serialize(string);
 	void acceptRequest(Transaction transaction);
 	
-
+	string serializeToString() const;
+    static User deserializeFromString(const std::string& str); 
 	bool checkSuspendedAccounts(string Reciever);
 	bool CheckBalance(double amount);
 	void CheckOut(string reeciever);

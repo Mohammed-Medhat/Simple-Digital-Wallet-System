@@ -93,9 +93,36 @@ DATE Transaction::getCurrentDateTime() {
 	return currentDateTime;
 }
 
-string Transaction::serializeToString()
+string Transaction::serializeToString () const
 {
 	return sender + "|" + reciever + "|" + std::to_string(amount) + "|" + Date.serializeToString();
+}
+
+Transaction Transaction::deserializeFromString(string& str)
+{
+	size_t pos1 = str.find('|');
+	if (pos1 == std::string::npos) {
+		throw std::runtime_error("Invalid serialized Transaction string format");
+	}
+	std::string sndr = str.substr(0, pos1);
+
+	size_t pos2 = str.find('|', pos1 + 1);
+	if (pos2 == std::string::npos) {
+		throw std::runtime_error("Invalid serialized Transaction string format");
+	}
+	std::string rcvr = str.substr(pos1 + 1, pos2 - pos1 - 1);
+
+	size_t pos3 = str.find('|', pos2 + 1);
+	if (pos3 == std::string::npos) {
+		throw std::runtime_error("Invalid serialized Transaction string format");
+	}
+	std::string amtStr = str.substr(pos2 + 1, pos3 - pos2 - 1);
+	double amt = std::stod(amtStr);
+
+	std::string dateStr = str.substr(pos3 + 1);
+	DATE dt = DATE::deserializeFromString(dateStr);
+
+	return Transaction(sndr, rcvr, amt, dt);
 }
 
 

@@ -77,31 +77,50 @@ bool System::search_user(string username)
     }
 }
 
-
-
-map<std::string, User> System::loadUsersFromFile(const std::string& filename)
+void System::readUsersFromFile(const std::string& filename)
 {
-    std::map<std::string, User> users;
-    std::ifstream ifs(filename);
-    if (!ifs) {
-        std::cerr << "Error: Failed to open file for reading." << std::endl;
-        return users;
+    ifstream file(filename);
+    if (!file.is_open()) {
+        std::cerr << "Error: Unable to open file " << filename << " for reading." << std::endl;
+        return;
     }
 
+    // Clear existing users
+    allUsers.clear();
+
+    // Read user data from file
     std::string line;
-    while (std::getline(ifs, line)) {
-        size_t pos = line.find(':');
-        if (pos != std::string::npos) {
-            std::string username = line.substr(0, pos);
-            User user;
-            user.deserialize(ifs);
-            users[username] = user;
-        }
+    while (std::getline(file, line)) {
+        // Parse user data from each line
+        // Assuming user data is serialized in a format that can be deserialized
+        User user = User::deserializeFromString(line);
+        // Insert user into allUsers map
+        allUsers[user.getUserName()] = user;
+        cout << "readed\n";
     }
 
-    ifs.close();
-    return users;
+    file.close();
 }
+
+void System::writeUsersToFile(const string& filename)
+{
+    ofstream file(filename);
+    if (!file.is_open()) {
+        std::cerr << "Error: Unable to open file " << filename << " for writing." << std::endl;
+        return;
+    }
+
+    // Write each user from allUsers map to file
+    for (const auto& pair : allUsers) {
+        const User& user = pair.second;
+        std::string userData = user.serializeToString();
+        file << userData << std::endl;
+        cout << "added\n";
+    }
+
+    file.close();
+}
+
 
 void System::Register(string& username, string& password, double balance) {
 

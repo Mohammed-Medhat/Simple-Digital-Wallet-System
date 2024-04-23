@@ -224,7 +224,17 @@ void home_page() {
 
 void main() {
 	
-	User ali("ali", "123456", 1200);
+	User ali("ali", "1234567", 1200);
+	User zoz("alii", "1234568", 1200);
+	User lol("aliii", "1234569", 1200);
+	User loll("aliiii", "12345691", 1200);
 	System::allUsers[ali.getUserName()] = ali;
-	home_page();
+	System::allUsers[zoz.getUserName()] = zoz;
+	System::allUsers[lol.getUserName()] = lol;
+	System::readUsersFromFile("Users.txt");
+	System::allUsers[loll.getUserName()] = loll;
+	System::writeUsersToFile("Users.txt");
+	
+	
+	//home_page();
 }

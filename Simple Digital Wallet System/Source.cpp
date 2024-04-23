@@ -1,6 +1,9 @@
 #pragma once
 #include<iostream>
-#include"System.cpp"
+#include"System.h"
+#include "Admin.h"
+#include"Transaction.h"
+#include"User.h"
 using namespace std;
 System sys;
 Admin aali("admin", "admin");
@@ -150,6 +153,7 @@ void admin(Admin ali) {
 	cout << "7- view all transactions  " << endl;
 	cout << "8- edit admin account  " << endl;
 	cout << "9- for exit!";
+	cin >> choice;
 	if (choice == 1) {
 		ali.view_Accounts_Data();
 	}
@@ -192,6 +196,7 @@ void admin(Admin ali) {
 		cout << "1- for editing user name  " << endl;
 
 		cout << "2- for editing password  " << endl;
+		cin >> choice2;
 		if (choice2 == 1) {
 			cout << "please enter the new name: ";
 			cin >> new_name;

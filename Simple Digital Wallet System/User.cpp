@@ -1,12 +1,14 @@
+#pragma once
 #include "User.h"
-User::User(string UserName, string Password, float balance)
+
+User::User(string UserName, string Password, double balance)
 {
 	this->UserName = UserName;
 	this->Password = Password;
 	this->balance = balance;
 }
 
-void User::BalanceAfterTransaction(float newBalance)
+void User::BalanceAfterTransaction(double newBalance)
 {
 	this->balance = newBalance;
 }
@@ -24,6 +26,21 @@ void User::setUserName(string UserName)
 string User::getUserName()
 {
 	return UserName;
+}
+
+void User::setpassword(string pass)
+{
+	Password = pass;
+}
+
+void User::setbalance(double bal)
+{
+	balance = bal;
+}
+
+string User::getpassword()
+{
+	return Password;
 }
 
 void User::userData()
@@ -57,15 +74,15 @@ void User::ViewHistory()
 
 // display out the message to enter username and amount - Entering username and amount in system
 
-void User::Send(string& reciever, float& amount)
+void User::Send(string& reciever, double& amount)
 {
 
 	bool T;
 	
+	map<string, User>::iterator FindingUser;
+	 FindingUser = System::allUsers.find(reciever);
 
-	auto FindingUser = UsersInSystem.allUsers.find(reciever);
-
-	if (FindingUser == UsersInSystem.allUsers.end()) {
+	if (FindingUser == System::allUsers.end()) {
 		cout << "The User is not found" << endl << "Do you want to continue? press 1 / 0 to exit";
 		cin >> T;
 		if (T == 1)
@@ -120,7 +137,7 @@ void User::Send(string& reciever, float& amount)
 
 }
 
-bool User::CheckBalance(float amount)
+bool User::CheckBalance(double amount)
 {
 	return(ViewCurrentBalance() >= amount || (amount > 0));
 }
@@ -144,12 +161,13 @@ void User::CheckOut(string reciever)
 	
 	if (T == 1)
 	{
-		auto R = System::allUsers.find(reciever);
+		map<string, User>::iterator R;
+		 R = System::allUsers.find(reciever);
 		User Reciever = R->second;
 		
 
-		float SenderNewBalance = ViewCurrentBalance() - transactions.getAmount();
-		float RecieverNewBalance = Reciever.ViewCurrentBalance() + transactions.getAmount();
+		double SenderNewBalance = ViewCurrentBalance() - transactions.getAmount();
+		double RecieverNewBalance = Reciever.ViewCurrentBalance() + transactions.getAmount();
 
 		BalanceAfterTransaction(SenderNewBalance);
 		
@@ -173,9 +191,8 @@ void User::CheckOut(string reciever)
 
 bool User::checkSuspendedAccounts(string Reciever)
 {
-		
-	 /*suspended_users.find(Reciever);*/
-	auto R = Admin::suspended_users.find(Reciever);
+	map<string, User>::iterator R;
+	 R = Admin::suspended_users.find(Reciever);
 	if (R == Admin::suspended_users.end())
 		return false;
 	else
@@ -185,15 +202,15 @@ bool User::checkSuspendedAccounts(string Reciever)
 
 
 
-void User::RequestMoney(string& sender, float amount) {
+void User::RequestMoney(string& sender, double amount) {
 
 	bool T;
 
-
-	auto R = System::allUsers.find(sender);
+	map<string, User>::iterator R;
+	 R = System::allUsers.find(sender);
 	User FindingUser = R->second;
 
-	if (R == UsersInSystem.allUsers.end()) {
+	if (R == System::allUsers.end()) {
 		cout << "The User is not found" << endl << "Do you want to continue? press 1 / 0 to exit";
 		cin >> T;
 		if (T == 1)
@@ -262,15 +279,15 @@ void User::RequestMoney(string& sender, float amount) {
 
 void User::acceptRequest(Transaction transactions) {
 
-	float newBalanceOfReciever = ViewCurrentBalance() - transactions.getAmount();
+	double newBalanceOfReciever = ViewCurrentBalance() - transactions.getAmount();
 	BalanceAfterTransaction(newBalanceOfReciever);
-
-	auto R = System::allUsers.find(transactions.getSender());
+	map<string, User>::iterator R;
+	 R = System::allUsers.find(transactions.getSender());
 
 
 	User FindingUser = R->second;
 
-	float newBalanceOfSender = ViewCurrentBalance() + transactions.getAmount();
+	double newBalanceOfSender = ViewCurrentBalance() + transactions.getAmount();
 	FindingUser.BalanceAfterTransaction(newBalanceOfSender);
 
 	cout << "transaction completed successfully";

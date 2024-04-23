@@ -12,7 +12,7 @@
 
 
 using namespace std;
-
+class User;
 
 class System
 {
@@ -28,7 +28,7 @@ public:
 	static void removeUser(string&);
 	static User* getUser(string& username);
 	bool Login(string, string);
-	static void Register(string&, string&, string&);
+	static void Register(string& username, string& password, double balance);
 	void Logout();
 	static void showAllUser();
 	static bool search_user(string);

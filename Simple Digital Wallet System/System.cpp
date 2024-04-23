@@ -76,22 +76,20 @@ bool System::search_user(string username)
     }
 }
 
-void System::Register(string& username, string& email, string& password) {
-    bool flag = 1;
-    while (flag) {
-        if (allUsers.find(username) != allUsers.end()) {
-            cout << "User '" << username << "' already exists." << endl;
-            cout << "press 0 to exit and 1 to retry " << endl;
-            cin >> flag;
-            if (!flag)
-                break;
-        }
-        else {
-            User user(username, password, 0);
-            allUsers[username] = user;
-            cout << "User '" << username << "' registered successfully." << endl;
-            break;
-        }
+void System::Register(string& username, string& password, double balance) {
+
+    if (allUsers.find(username) != allUsers.end()) {
+        cout << "User '" << username << "' already exists." << endl;
+        cout << "please enter another username :\n";
+        cin >> username;
+        Register(username, password, balance);
+    }
+    else {
+        User user(username, password, balance);
+        allUsers[username] = user;
+        cout << "User '" << username << "' registered successfully." << endl;
+
+
     }
 
 }

@@ -2,6 +2,7 @@
 #include "Admin.h"
 
 
+
 Admin::Admin()
 {
 	username = "admin";
@@ -76,7 +77,7 @@ void Admin::edit_password()
 	cin >> new_pass;
 	//check the new pass is valid
 
-	System::allUsers[name].set_password(new_pass);
+	System::allUsers[name].setpassword(new_pass);
 	cout << "The Password Has Been Changed Successuflly \n";
 	cout << "The new Password of The User is :\t" << new_pass << "\n";
 }
@@ -88,24 +89,15 @@ void Admin::add_user()
 	cout << "Please Enter The Username of The User :\t";
 
 	cin >> username;
-	if (System::allUsers.find(username) != System::allUsers.end()) {
-		cout << "User '" << username << "' already exists." << endl;
-		add_user();
-	}
-	else {
 
-		cout << "add password" << endl;
+	
+		cout << "Please Enter The Username of The User :\n";
 		string password;
 		cin >> password;
-
 		double balance;
-		cout << "Please Enter The Balance of The User :\t";
+		cout << "Please Enter The Username of The User :\n";
 		cin >> balance;
-
-		User user(username, password, 0);
-		System::allUsers[username] = user;
-		cout << "User '" << username << "' added successfully." << endl;
-	}
+		System::Register(username, password, balance);
 }
 
 void Admin::delete_user()
@@ -174,7 +166,7 @@ void Admin::edit_balance()
 	//check the username func
 	cin >> new_balance;
 
-	System::allUsers[name].set_balance(new_balance);
+	System::allUsers[name].setbalance(new_balance);
 
 	cout << "The User Balance Has Been Modified \n";
 

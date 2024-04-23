@@ -1,15 +1,17 @@
 #pragma once
-#include "system.h"
 #include <iostream>
-
+#include "System.h"
+#include "Transaction.h"
+#include "User.h"
 using namespace std;
-
+class User;
 class Admin
 {
 private:
 	string username;
 	string password;
 public:
+	
 	static map<string,User> suspended_users;
 
 	Admin();

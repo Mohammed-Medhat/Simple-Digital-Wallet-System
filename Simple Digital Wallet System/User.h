@@ -1,9 +1,11 @@
+#pragma once
 #include <iostream>
 #include <vector>
 #include "Transaction.h"
 #include <map>
 #include <list>
 #include "Admin.h"
+#include "System.h"
 
 
 using namespace std;
@@ -11,31 +13,32 @@ class User
 {
 public:
 	string UserName, Password;
-	float balance;
+	double balance;
 	Transaction transactions;
 	vector <Transaction> History;
 	list<Transaction> pendingRequests;
-	System UsersInSystem;
-	Admin UsersCheckedByAdmin;
 	
 public:
 
 	User();
-	User(string UserName, string Password, float balance);
+	User(string UserName, string Password, double balance);
 	void setUserName(string UserName);
 	string getUserName();
+	void setpassword(string pass);
+	void setbalance(double bal);
+	string getpassword();
 	double ViewCurrentBalance();
 	void userData();
-	void Send(string& reciever, float& amount);
-	void RequestMoney(string& sender, float amount);
+	void Send(string& reciever, double& amount);
+	void RequestMoney(string& sender, double amount);
 
 	void acceptRequest(Transaction transaction);
 	
 
 	bool checkSuspendedAccounts(string Reciever);
-	bool CheckBalance(float amount);
+	bool CheckBalance(double amount);
 	void CheckOut(string reeciever);
-	void BalanceAfterTransaction(float newBalance);
+	void BalanceAfterTransaction(double newBalance);
 	void declineRequest(Transaction transaction);
 	void viewPendingRequests();
 	void ViewHistory();

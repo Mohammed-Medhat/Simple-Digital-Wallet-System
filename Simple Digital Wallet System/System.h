@@ -33,9 +33,10 @@ public:
 	void Logout();
 	static void showAllUser();
 	static bool search_user(string);
-	
-	static void readUsersFromFile(const std::string& filename);
-	static void writeUsersToFile(const std::string& filename);
+	static void readAllTransactions();
+	static void writeAllTransactions();
+	static void readUsersFromFile();
+	static void writeUsersToFile();
 	//void saveData();
 	//void deleteData();
 	~System();

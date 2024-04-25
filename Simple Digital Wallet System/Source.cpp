@@ -224,25 +224,36 @@ void home_page() {
 
 void main() {
 	System sys;
-	sys.readUsersFromFile("Users.txt"); // Load users data from file
-	
-	User* u= System::getUser("it worked");
-	u->setUserName("it wworked");
-	cout << u->UserName << endl;
+	sys.readUsersFromFile(); // Load users data from file
+	DATE d;
+	d.day=15;
+	d.month=2;
+	d.hour=6;
+	d.min=30; d.year=2024;
+	Transaction ts("alii","aliii",20,d);
+	sys.allTransactions.push_back(ts);
+	sys.readUsersFromFile();
 
+	Transaction x =sys.allTransactions[0];
+	cout<<x.sender;
+
+
+	sys.writeAllTransactions();
+
+	
 	// Create and add users to the system
 	//User ali("ali", "1234567", 1200);
 	//User zoz("alii", "1234568", 1200);
 	//User lol("aliii", "1234569", 1200);
 	//User loll("aliiii", "12345691", 1200);
-
+	
 	//// Add users to the system
 	//sys.allUsers[ali.getUserName()] = ali;
 	//sys.allUsers[zoz.getUserName()] = zoz;
 	//sys.allUsers[lol.getUserName()] = lol;
 	//sys.allUsers[loll.getUserName()] = loll;
 
-	sys.writeUsersToFile("Users.txt");
+	sys.writeUsersToFile();
 	
 	
 	//home_page();

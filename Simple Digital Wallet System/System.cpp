@@ -77,8 +77,60 @@ bool System::search_user(string username)
     }
 }
 
-void System::readUsersFromFile(const std::string& filename)
+void System::readAllTransactions()
 {
+    string filename ="Transactions.txt" ;
+    // Open the file for reading
+    std::ifstream inFile(filename);
+    if (!inFile.is_open()) {
+        std::cerr << "Error: Unable to open file " << filename << " for reading." << std::endl;
+        return;
+    }
+
+    allTransactions.clear(); // Clear existing transactions before reading new ones
+
+    std::string line;
+    while (std::getline(inFile, line)) {
+        if (!line.empty()) {
+            try {
+                // Deserialize each line into a Transaction object and add to vector
+                Transaction transaction = Transaction::deserializeFromString(line);
+                allTransactions.push_back(transaction);
+            }
+            catch (const std::exception& e) {
+                std::cerr << "Error reading transaction: " << e.what() << std::endl;
+            }
+        }
+    }
+
+    inFile.close();
+}
+
+void System::writeAllTransactions()
+{
+    string filename = "Transactions.txt";
+    // Open the file for writing
+    std::ofstream outFile(filename);
+    if (!outFile.is_open()) {
+        std::cerr << "Error: Unable to open file " << filename << " for writing." << std::endl;
+        return;
+    }
+
+    for (const auto& transaction : allTransactions) {
+        // Serialize the transaction to string and write to file
+        std::string serializedTransaction = transaction.serializeToString();
+        if (!serializedTransaction.empty()) {
+            outFile << serializedTransaction << std::endl;
+        }
+    }
+
+    outFile.close();
+}
+
+
+void System::readUsersFromFile()
+{
+    string filename = "Users.txt";
     std::ifstream file(filename);
     if (!file.is_open()) {
         std::cerr << "Error: Unable to open file " << filename << " for reading." << std::endl;
@@ -104,8 +156,9 @@ void System::readUsersFromFile(const std::string& filename)
     file.close();
 }
 
-void System::writeUsersToFile(const string& filename)
+void System::writeUsersToFile()
 {
+    string filename = "Users.txt";
     ofstream file(filename);
     if (!file.is_open()) {
         std::cerr << "Error: Unable to open file " << filename << " for writing." << std::endl;

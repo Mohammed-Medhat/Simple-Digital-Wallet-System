@@ -301,72 +301,74 @@ void User::acceptRequest(Transaction transactions) {
 
 }
 
+void User::addTransactionToHistory( Transaction transaction)
+{
+	
+		History.push_back(transaction);
+
+}
+
+void User::addPendingRequest( Transaction transaction)
+{
+		pendingRequests.push_back(transaction);
+
+}
+
 string User::serializeToString() const
 {
-	std::string serializedData;
-
-	serializedData += UserName + "|" + Password + "|" + std::to_string(balance) + "\n";
+	std::ostringstream oss;
+	oss << UserName << "|" << Password << "|" << balance << "\n";
 
 	for (const auto& transaction : History) {
-		serializedData += "History:" + transaction.serializeToString() + "\n";
+		oss << "History:" << transaction.serializeToString() << "\n";
 	}
 
 	for (const auto& request : pendingRequests) {
-		serializedData += "PendingRequest:" + request.serializeToString() + "\n";
+		oss << "PendingRequest:" << request.serializeToString() << "\n";
 	}
 
-	return serializedData;
+	return oss.str();
 }
 
 User User::deserializeFromString(const std::string& str)
 {
 	std::istringstream iss(str);
-	std::string line;
-	getline(iss, line); // Read first line (User data)
-	size_t pos = line.find('|');
-	if (pos == std::string::npos) {
-		throw std::runtime_error("Invalid serialized User string format: Missing '|' separator");
-	}
-	std::string name = line.substr(0, pos);
-	line.erase(0, pos + 1);
+	std::string token;
 
-	pos = line.find('|');
-	if (pos == std::string::npos) {
-		throw std::runtime_error("Invalid serialized User string format: Missing '|' separator");
-	}
-	std::string password = line.substr(0, pos);
-	line.erase(0, pos + 1);
+	// Read UserName
+	std::getline(iss, token, '|');
+	std::string userName = token;
 
-	// Check if there is anything left in the line for balance
-	if (line.empty()) {
-		throw std::runtime_error("Invalid serialized User string format: Missing balance");
-	}
-	double balance = std::stod(line);
+	// Read Password
+	std::getline(iss, token, '|');
+	std::string password = token;
 
-	User user(name, password, balance);
+	// Read balance
+	std::getline(iss, token, '|');
+	double balance = std::stod(token);
 
-	// Read remaining lines (History and PendingRequest)
-	while (getline(iss, line)) {
-		pos = line.find(':');
-		if (pos == std::string::npos) {
-			throw std::runtime_error("Invalid serialized User string format: Missing ':' separator");
-		}
-		std::string section = line.substr(0, pos);
-		line.erase(0, pos + 1);
+	User user(userName, password, balance);
 
-		if (section == "History") {
-			user.History.push_back(Transaction::deserializeFromString(line));
-		}
-		else if (section == "PendingRequest") {
-			user.pendingRequests.push_back(Transaction::deserializeFromString(line));
-		}
-		else {
-			throw std::runtime_error("Invalid section in serialized User string: " + section);
+	// Read remaining lines for History and PendingRequest
+	while (std::getline(iss, token)) {
+		if (!token.empty()) {
+			if (token.find("History:") == 0) {
+				std::string historyData = token.substr(8); // Extract the transaction part
+				Transaction historyTransaction = Transaction::deserializeFromString(historyData);
+				user.addTransactionToHistory(historyTransaction);
+			}
+			else if (token.find("PendingRequest:") == 0) {
+				std::string requestData = token.substr(15); // Extract the transaction part
+				Transaction requestTransaction = Transaction::deserializeFromString(requestData);
+				user.addPendingRequest(requestTransaction);
+			}
 		}
 	}
 
 	return user;
 }
+
+
 
 
 //
@@ -409,5 +411,5 @@ void User::declineRequest(Transaction transactions) {
 	}
 }
 User::~User(void) {
-	cout << "end";
+	
 }

@@ -223,17 +223,26 @@ void home_page() {
 
 
 void main() {
+	System sys;
+	sys.readUsersFromFile("Users.txt"); // Load users data from file
 	
-	User ali("ali", "1234567", 1200);
-	User zoz("alii", "1234568", 1200);
-	User lol("aliii", "1234569", 1200);
-	User loll("aliiii", "12345691", 1200);
-	System::allUsers[ali.getUserName()] = ali;
-	System::allUsers[zoz.getUserName()] = zoz;
-	System::allUsers[lol.getUserName()] = lol;
-	System::readUsersFromFile("Users.txt");
-	System::allUsers[loll.getUserName()] = loll;
-	System::writeUsersToFile("Users.txt");
+	User* u= System::getUser("it worked");
+	u->setUserName("it wworked");
+	cout << u->UserName << endl;
+
+	// Create and add users to the system
+	//User ali("ali", "1234567", 1200);
+	//User zoz("alii", "1234568", 1200);
+	//User lol("aliii", "1234569", 1200);
+	//User loll("aliiii", "12345691", 1200);
+
+	//// Add users to the system
+	//sys.allUsers[ali.getUserName()] = ali;
+	//sys.allUsers[zoz.getUserName()] = zoz;
+	//sys.allUsers[lol.getUserName()] = lol;
+	//sys.allUsers[loll.getUserName()] = loll;
+
+	sys.writeUsersToFile("Users.txt");
 	
 	
 	//home_page();

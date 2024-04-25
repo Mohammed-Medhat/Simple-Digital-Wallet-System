@@ -48,7 +48,7 @@ void System::removeUser(string& username)
         cout << "User '" << username << "' not found." << endl;
     }
 }
-User* System::getUser(string& username) {
+User* System::getUser(string username) {
     auto it = allUsers.find(username);
     if (it != allUsers.end()) {
         return &(it->second);
@@ -79,7 +79,7 @@ bool System::search_user(string username)
 
 void System::readUsersFromFile(const std::string& filename)
 {
-    ifstream file(filename);
+    std::ifstream file(filename);
     if (!file.is_open()) {
         std::cerr << "Error: Unable to open file " << filename << " for reading." << std::endl;
         return;
@@ -91,12 +91,14 @@ void System::readUsersFromFile(const std::string& filename)
     // Read user data from file
     std::string line;
     while (std::getline(file, line)) {
-        // Parse user data from each line
-        // Assuming user data is serialized in a format that can be deserialized
-        User user = User::deserializeFromString(line);
-        // Insert user into allUsers map
-        allUsers[user.getUserName()] = user;
-        cout << "readed\n";
+        try {
+            User user = User::deserializeFromString(line);
+            allUsers[user.getUserName()] = user;
+           // std::cout << "Read user: " << user.getUserName() << std::endl;
+        }
+        catch (const std::exception& e) {
+           // std::cerr << "Error reading user from file: " << e.what() << std::endl;
+        }
     }
 
     file.close();
@@ -115,7 +117,7 @@ void System::writeUsersToFile(const string& filename)
         const User& user = pair.second;
         std::string userData = user.serializeToString();
         file << userData << std::endl;
-        cout << "added\n";
+        //cout << "added\n";
     }
 
     file.close();

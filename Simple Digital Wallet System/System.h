@@ -27,7 +27,7 @@ public:
 	static void addnewUser(string&);
 	static void addUser(string&, string&, double);
 	static void removeUser(string&);
-	static User* getUser(string& username);
+	static User* getUser(string username);
 	bool Login(string, string);
 	static void Register(string& username, string& password, double balance);
 	void Logout();

@@ -21,7 +21,7 @@ public:
 	Transaction transactions;
 	vector <Transaction> History;
 	list<Transaction> pendingRequests;
-	
+
 public:
 
 	User();
@@ -36,7 +36,11 @@ public:
 	void Send(string& reciever, double& amount);
 	void RequestMoney(string& sender, double amount);
 	void acceptRequest(Transaction transaction);
-	
+	void addTransactionToHistory( Transaction transaction);
+
+	void addPendingRequest( Transaction transaction);
+
+
 	string serializeToString() const;
     static User deserializeFromString(const std::string& str); 
 	bool checkSuspendedAccounts(string Reciever);

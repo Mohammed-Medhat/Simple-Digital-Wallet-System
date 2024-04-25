@@ -1,6 +1,7 @@
 #pragma once
-#include "Admin.h"
 
+#include "Admin.h"
+using namespace std;
 
 map<string, User> Admin::suspended_users;
 Admin::Admin()
@@ -51,18 +52,27 @@ void Admin::view_Accounts_Data()
 void Admin::edit_username()
 {
 	string name, new_name;
-	cout << "Please Enter The Username of the User to Edit His Username :\t";
+	cout << "Please Enter The Username of the User to Edit His Username:\t";
 	cin >> name;
-
-	//check the name fun
-
-	cout << "Please Enter The New Username :\t";
-	cin >> new_name;
-	//check the new name is valid
-
-	System::allUsers[name].setUserName(new_name);
-	cout << "The Username Has Been Changed Successuflly \n";
-	cout << "The new Username of The User is :\t" << new_name << "\n";
+	
+	do
+	{
+		
+			cout << "Please Enter The New Username :\t";
+			cin >> new_name;
+			if (!System::search_user(new_name))
+				break;
+			else
+			{
+				cout << "username is already in use" << endl;
+			}
+		//check the new name is valid
+	} while (System::search_user(new_name));
+		System::allUsers[name].setUserName(new_name);
+		cout << "The Username Has Been Changed Successfully \n";
+		cout << "The new Username of The User is:\t" << new_name << "\n";
+	
+	
 }
 
 void Admin::edit_password()
@@ -147,9 +157,9 @@ void Admin::view_all_transactions()
 	it = System::allTransactions.begin();
 
 
-	while (it != System::allTransactions.end())
+	for(Transaction t : System::allTransactions)
 	{
-		it->getCurrentDateTime();
+		t.DisplayTransactionData();
 	}
 
 }

@@ -19,7 +19,7 @@ class System
 {
 public:
 	static map<string, User> allUsers;
-	User* loggedInUser;
+	static  User* loggedInUser;
 	static vector<Transaction> allTransactions;
 
 public:

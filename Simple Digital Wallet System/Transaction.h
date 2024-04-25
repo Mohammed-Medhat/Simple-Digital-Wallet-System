@@ -60,7 +60,7 @@ public:
 	 double getAmount();
 	 void DisplayTransactionData();
 	 void pendingRequest();
-	 DATE getCurrentDateTime();
+	 static DATE getCurrentDateTime();
 	 string serializeToString() const;
 	 static Transaction deserializeFromString(string& str);
 

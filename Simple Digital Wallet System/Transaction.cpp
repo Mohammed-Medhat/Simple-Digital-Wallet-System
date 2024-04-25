@@ -59,12 +59,12 @@ void Transaction::SetSender(string sender)
 
 void Transaction::DisplayTransactionData()
 {
-	DATE date = getCurrentDateTime();
+	
 	cout << "sender: " << sender << endl;
-	cout << "Reciever: " <<  reciever << endl;
+	cout << "Receiver: " <<  reciever << endl;
 	cout << "Paid Money : " << amount << endl;
-	cout << "Time: " << date.hour << ":" << date.min << endl;
-	cout << "Date: " << date.month << "/" << date.day << "/" << date.year << endl<<"------------------------------\n";
+	cout << "Time: " << Date.hour << ":" << Date.min << endl;
+	cout << "Date: " << Date.month << "/" << Date.day << "/" << Date.year << endl<<"------------------------------\n";
 }
 
 

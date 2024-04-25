@@ -6,6 +6,7 @@
 using namespace std;
 map<string, User> System::allUsers;
 vector<Transaction> System::allTransactions;
+User* System::loggedInUser;
 System::System() {
 
 }
@@ -198,14 +199,25 @@ void System::Register(string& username, string& password, double balance) {
 
 bool System::Login(string username, string password) {
     auto it = allUsers.find(username);
+    int chooice;
     if (it != allUsers.end() && it->second.Password == password) {
         loggedInUser = &(it->second);
         cout << "User '" << username << "' logged in successfully." << endl;
         return true;
     }
     else {
-        cout << "Invalid username or email. Login failed." << endl;
+        cout << "Invalid username or email. Login failed.\npress 0 to exit and others to retry" << endl;
+        cin >> chooice;
+        if(chooice==0)
         return false;
+        else
+        {
+            cout << "please enter your name : ";
+            cin >> username;
+            cout << "please enter your password : ";
+            cin >> password;;
+            System::Login(username, password);
+        }
     }
 }
 void System::Logout() {

@@ -110,6 +110,10 @@ void User::Send(string& reciever, double& amount)
 
 	else
 	{
+		transactions.amount = amount;
+		transactions.sender = System::loggedInUser->getUserName();
+		transactions.reciever = reciever;
+		transactions.Date= Transaction::getCurrentDateTime();
 		CheckOut(reciever);
 	}
 
@@ -138,8 +142,8 @@ void User::ViewHistory()
 	else {
 		cout << "Your Transaction History: " << endl << "**************\n";
 
-		for (int i = 0; i < History.size(); i++) {
-			transactions.DisplayTransactionData();
+		for  (Transaction t : History) {
+			t.DisplayTransactionData();
 		}
 	}
 }
@@ -165,7 +169,7 @@ void User::CheckOut(string reciever)
 
 
 
-	cout << "Reciever: " << reciever<<endl;
+	cout << "Receiver: " << reciever<<endl;
 	cout << "Paid Amount: " << transactions.getAmount()<<endl;
 	cout << "Time: " << TransactionDate.hour << ":" << TransactionDate.min << endl;
 	cout << "Date: " << TransactionDate.month << "/" << TransactionDate.day << "/" << TransactionDate.year << endl;
@@ -175,21 +179,26 @@ void User::CheckOut(string reciever)
 	
 	if (T == 1)
 	{
-		map<string, User>::iterator R;
-		 R = System::allUsers.find(reciever);
-		User Reciever = R->second;
+		
+		
+		User *Reciever = System::getUser(reciever);
 		
 
 		double SenderNewBalance = ViewCurrentBalance() - transactions.getAmount();
-		double RecieverNewBalance = Reciever.ViewCurrentBalance() + transactions.getAmount();
-
+		
+		double RecieverNewBalance = Reciever->ViewCurrentBalance() + transactions.getAmount();
+		
 		BalanceAfterTransaction(SenderNewBalance);
 		
-		Reciever.BalanceAfterTransaction(RecieverNewBalance);
+		
+		Reciever->BalanceAfterTransaction(RecieverNewBalance);
 		
 		History.push_back(transactions);
-		Reciever.History.push_back(transactions);
-
+		
+		Reciever->History.push_back(transactions);
+		System::allTransactions.push_back(transactions);
+		cout << transactions.sender << endl;
+		cout << transactions.reciever<<endl;
 
 	}
 

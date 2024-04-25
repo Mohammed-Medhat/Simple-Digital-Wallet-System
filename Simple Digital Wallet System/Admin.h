@@ -27,8 +27,8 @@ public:
 
 	void view_Accounts_Data();
 
-	void edit_username();
-	void edit_password();
+	static  void edit_username();
+	static void edit_password();
 	void add_user();
 	void delete_user();
 

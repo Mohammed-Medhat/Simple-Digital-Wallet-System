@@ -1,4 +1,4 @@
-#pragma once
+
 #include<iostream>
 #include"System.h"
 #include "Admin.h"
@@ -8,156 +8,195 @@ using namespace std;
 System sys;
 Admin aali("admin", "admin");
 void home_page();
-void admin(Admin ali);
-void user(User ali)
-{
-	int choice, choice2;
-	cout << "Welcome!" << endl;
-	cout << "Please Enter : " << endl;
-	cout << "1-for Sending Money" << endl;
-	cout << "2-for Requesting Money" << endl;
-	cout << "3-for Editing Username or Password" << endl;
-	cout << "4-for viewing your current balance" << endl;
-	cout << "5-for viewing your transaction history" << endl;
-	cout << "6-to logout from account" << endl;
-	cin >> choice;
-	if (choice == 1)
-	{
-		string name;
-		double amount;
-		cout << "please enter the username of the recipient's username :\t";
-		cin >> name;
-		cout << "please enter the amount of money :\t";
-		cin >> amount;
-		ali.Send(name, amount);
-	}
-	else if (choice == 2)
-	{
-		string name;
-		double amount;
-		cout << "please enter the username of the sender :\t";
-		cin >> name;
-		cout << "please enter the amount of money :\t";
-		cin >> amount;
-		ali.Send(name, amount);
-	}
-	else if (choice == 3)
-	{
-		string new_name, new_pass;
+void admin(Admin admin);
+void user(User user) {
+	bool done = true;
+	while (done) {
+		int choice, choice2;
+		std::cout << "Welcome!" << std::endl;
+		std::cout << "Please Enter :" << std::endl;
+		std::cout << "1 - Send Money" << std::endl;
+		std::cout << "2 - Request Money" << std::endl;
+		cout << "3 - Check Requests \n";
+		std::cout << "4 - Edit Username or Password" << std::endl;
+		std::cout << "5 - View Current Balance" << std::endl;
+		std::cout << "6 - View Transaction History" << std::endl;
+		std::cout << "7 - Logout" << std::endl;
+		cout << "8 - close app" << endl;
+		std::cin >> choice;
 
-		cout << "please enter :\n" << "1-for editing username\n" << "2-for editing password\n";
-		cin >> choice2;
-		if (choice2 == 1)
-		{
-			cout << "please enter your new username :\n";
-			cin >> new_name;
-			//ali.edit_name
+		switch (choice) {
+		case 1: {
+			std::string name;
+			double amount=-1;
+			std::cout << "Please enter the recipient's username: ";
+			std::cin >> name;
+			while (amount <=0 ) {
+				std::cout << "Please enter the amount of money: ";
+				std::cin >> amount;
+				if (amount<=0)
+				{
+					cout << "amount of money cannot = 0 or negative please try again\n ";
+				}
+			}
+			System::loggedInUser->Send(name, amount);
+			break;
 		}
-		else if (choice2 == 2)
-		{
-			cout << "please enter your new password :\n";
-			cin >> new_pass;
-			//ali.edit_pass
+		case 2: {
+			std::string name;
+			double amount;
+			std::cout << "Please enter the sender's username: ";
+			std::cin >> name;
+			std::cout << "Please enter the amount of money: ";
+			std::cin >> amount;
+			System::loggedInUser->RequestMoney(name, amount);
+			break;
 		}
-		else
-		{
-			cout << "invalid input !!\n";
-			user(ali);
+		case 3:
+			System::loggedInUser->viewPendingRequests();
+			break;
+		case 4: {
+			bool valid_choice2 = true;
+			while (valid_choice2) {
+				std::cout << "Please choose:\n";
+				std::cout << "1 - Edit Username\n";
+				std::cout << "2 - Edit Password\n3 - Exit\n ";
+				std::cin >> choice2;
+
+
+				switch (choice2) {
+				case 1: {
+
+					Admin::edit_username();
+					break;
+				}
+				case 2: {
+					std::string new_pass;
+					std::cout << "Please enter your new password: ";
+					std::cin >> new_pass;
+					Admin::edit_password();
+					break;
+				}
+				case 3:
+
+					break;
+				default:
+					std::cout << "Invalid input!" << std::endl;
+					break;
+				}
+				if (choice2 == 3)
+					break;
+			}
+			break;
 		}
-	}
-	else if (choice == 4)
-	{
-		cout << "your current balance is :\n" << ali.ViewCurrentBalance();
-	}
-	else if (choice == 5)
-	{
-		ali.ViewHistory();
-	}
-	else if (choice == 6)
-	{
-		home_page();
-	}
-	else
-	{
-		cout << "Invallid input !!\n";
-		user(ali);
+		case 5:
+			std::cout << "Your current balance is: " << System::loggedInUser->ViewCurrentBalance() << std::endl;
+			break;
+		case 6:
+			System::loggedInUser->ViewHistory();
+			break;
+		case 7:
+			home_page(); // Assuming home_page() is a function to handle logout
+			break;
+		case 8:
+			done = false;
+			break;
+		
+		default:
+			std::cout << "Invalid input!" << std::endl;
+			break;
+		}
+		if (done == 0)
+			break;
 	}
 }
-void admin(Admin ali) {
+
+void admin(Admin admin) {
 	int choice;
-	cout << "please Enter :" << endl;
-	cout << "1- for View all accounts data  " << endl;
-	cout << "2- for editing account  " << endl;
-	cout << "3- for adding a new user" << endl;
-	cout << "4- for deleting new user   " << endl;
-	cout << "5- for suspending an account  " << endl;
-	cout << "6- for reactivating an account " << endl;
-	cout << "7- view all transactions  " << endl;
-	cout << "8- edit admin account  " << endl;
-	cout << "9- for exit!";
-	cin >> choice;
-	if (choice == 1) {
-		ali.view_Accounts_Data();
-	}
-	else if (choice == 2) {
-		int choice1;
-		cout << "1- for editing user name  " << endl;
-		cout << "2- for editing password  " << endl;
-		cout << "3- for editing balance" << endl;
-		cin >> choice1;
-		if (choice1 == 1) {
-			ali.edit_username();
-		}
-		else if (choice1 == 2) {
-			ali.edit_password();
-		}
-		else if (choice1 == 3) {
-			ali.edit_balance();
-		}
-	}
-	else if (choice == 3)
-	{
-		ali.add_user();
+	cout << "Please Enter:" << endl;
+	cout << "1. View all accounts data" << endl;
+	cout << "2. Edit account" << endl;
+	cout << "3. Add a new user" << endl;
+	cout << "4. Delete a user" << endl;
+	cout << "5. Suspend an account" << endl;
+	cout << "6. Reactivate an account" << endl;
+	cout << "7. View all transactions" << endl;
+	cout << "8. Edit admin account" << endl;
+	cout << "9. Exit" << endl;
 
-	}
-	else if (choice == 4) {
-		ali.delete_user();
-	}
-	else if (choice == 5) {
-		ali.suspend_user();
-	}
-	else if (choice == 6) {
-		ali.reactivated();
-	}
-	else if (choice == 7) {
-		ali.view_all_transactions();
-	}
-	else if (choice == 8) {
-		int choice2;
-		string new_name, new_password;
-		cout << "1- for editing user name  " << endl;
+	bool valid_choice = true;
+	while (valid_choice) {
+		cin >> choice;
 
-		cout << "2- for editing password  " << endl;
-		cin >> choice2;
-		if (choice2 == 1) {
-			cout << "please enter the new name: ";
-			cin >> new_name;
-			ali.set_username(new_name);
+		switch (choice) {
+		case 1:
+			admin.view_Accounts_Data();
+			break;
+		case 2:
+			int choice1;
+			cout << "1. Edit username" << endl;
+			cout << "2. Edit password" << endl;
+			cout << "3. Edit balance" << endl;
+			cout << "4. Exit" << endl;
+
+			cin >> choice1;
+
+			switch (choice1) {
+			case 1:
+			{
+				string new_name; // Declare new_name inside the case block
+				cout << "Please enter the new name: ";
+				cin >> new_name;
+				admin.set_username(new_name);
+			}
+			break;
+			case 2:
+			{
+				string new_password; // Declare new_password inside the case block
+				cout << "Please enter the new password: ";
+				cin >> new_password;
+				admin.set_password(new_password);
+			}
+			break;
+			case 3:
+				valid_choice = false; // Exit inner loop
+				cout << "Exiting edit account menu..." << endl;
+				break;
+			default:
+				cout << "Invalid choice. Please try again." << endl;
+				break;
+			}
+			break;
+		case 3:
+			admin.add_user();
+			break;
+		case 4:
+			admin.delete_user();
+			break;
+		case 5:
+			admin.suspend_user();
+			break;
+		case 6:
+			admin.reactivated();
+			break;
+		case 7:
+			admin.view_all_transactions();
+			break;
+		case 8:
+			// Implement admin account editing functionality
+			break;
+		case 9:
+			valid_choice = false; // Exit outer loop
+			cout << "Exiting admin menu..." << endl;
+			break;
+		default:
+			cout << "Invalid choice. Please try again." << endl;
+			break;
 		}
-		else if (choice2 == 2) {
-			cout << "please enter the new password";
-			cin >> new_password;
-			ali.set_password(new_password);
-		}
-	}
-	else if (choice == 9) {
-		home_page();
-	}
-	else {
-		cout << "invalid choice!!!";
-		admin(ali);
 	}
 }
+
+
 void home_page() {
 
 	int choice;
@@ -173,21 +212,21 @@ void home_page() {
 	switch (choice) {
 	case 1:
 	{
-		cout << "please enter your name";
+		cout << "please enter your name : ";
 		cin >> name;
-		cout << "please enter your password";
+		cout << "please enter your password : ";
 		cin >> password;
-		sys.Login(name, password);
+		if(sys.Login(name, password))
 		user(sys.allUsers[name]);
 		break;
 	}
 	case 2: {
-		cout << "please enter your name";
+		cout << "please enter your name : ";
 		cin >> name;
-		cout << "please enter your password";
+		cout << "please enter your password : ";
 		cin >> password;
 
-		if (sys.Login(name, password))
+		if (name=="admin"&&password=="admin")
 		{
 			admin(aali);
 		}
@@ -199,11 +238,11 @@ void home_page() {
 	}
 	case 3: {
 
-		cout << "please enter your name";
+		cout << "please enter your name : ";
 		cin >> name;
-		cout << "please enter your password";
+		cout << "please enter your password : ";
 		cin >> password;
-		cout << "please enter your balance";
+		cout << "please enter your balance : ";
 		//sys.Register(name, password, balance);
 		break;
 	}
@@ -223,38 +262,45 @@ void home_page() {
 
 
 void main() {
-	System sys;
-	sys.readUsersFromFile(); // Load users data from file
-	DATE d;
-	d.day=15;
-	d.month=2;
-	d.hour=6;
-	d.min=30; d.year=2024;
-	Transaction ts("alii","aliii",20,d);
-	sys.allTransactions.push_back(ts);
-	sys.readUsersFromFile();
+	
+	System::readUsersFromFile(); 
+	System::readAllTransactions();
+	
+	for(Transaction &t:System::allTransactions)
+	{
+		// Get sender and receiver from the transaction
+		std::string senderName = t.getSender();
+		std::string receiverName = t.getReciever();
 
-	Transaction x =sys.allTransactions[0];
-	cout<<x.sender;
+		// Get sender user from the system
+		User* sender = System::getUser(senderName);
+		if (sender == nullptr) {
+			
+			continue; // Skip to the next transaction
+		}
 
+		// Get receiver user from the system
+		User* receiver = System::getUser(receiverName);
+		if (receiver == nullptr) {
+			
+			continue; // Skip to the next transaction
+		}
 
-	sys.writeAllTransactions();
+		// Add transaction to sender's and receiver's history
+		sender->addTransactionToHistory(t);
+		receiver->addTransactionToHistory(t);
+	
+	}
+	
 
 	
-	// Create and add users to the system
-	//User ali("ali", "1234567", 1200);
-	//User zoz("alii", "1234568", 1200);
-	//User lol("aliii", "1234569", 1200);
-	//User loll("aliiii", "12345691", 1200);
-	
-	//// Add users to the system
-	//sys.allUsers[ali.getUserName()] = ali;
-	//sys.allUsers[zoz.getUserName()] = zoz;
-	//sys.allUsers[lol.getUserName()] = lol;
-	//sys.allUsers[loll.getUserName()] = loll;
 
-	sys.writeUsersToFile();
 	
 	
-	//home_page();
+	
+	home_page();
+	
+
+	System::writeAllTransactions();
+	System::writeUsersToFile();
 }

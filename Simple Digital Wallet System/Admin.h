@@ -27,8 +27,8 @@ public:
 
 	void view_Accounts_Data();
 
-	static  void edit_username();
-	static void edit_password();
+	static  void edit_username(string name);
+	static void edit_password(string name);
 	void add_user();
 	void delete_user();
 
@@ -37,7 +37,7 @@ public:
 
 	void view_all_transactions();
 	
-	void edit_balance();
+	void edit_balance(string name);
 	~Admin();
 };
 

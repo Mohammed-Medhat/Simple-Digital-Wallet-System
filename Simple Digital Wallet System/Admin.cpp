@@ -49,47 +49,43 @@ void Admin::view_Accounts_Data()
 	}
 }
 
-void Admin::edit_username()
+void Admin::edit_username(string name)
 {
-	string name, new_name;
-	cout << "Please Enter The Username of the User to Edit His Username:\t";
-	cin >> name;
-	
-	do
+	if (!System::search_user(name)) 
 	{
-		
-			cout << "Please Enter The New Username :\t";
-			cin >> new_name;
-			if (!System::search_user(new_name))
-				break;
-			else
-			{
-				cout << "username is already in use" << endl;
-			}
-		//check the new name is valid
-	} while (System::search_user(new_name));
-		System::allUsers[name].setUserName(new_name);
-		cout << "The Username Has Been Changed Successfully \n";
-		cout << "The new Username of The User is:\t" << new_name << "\n";
-	
-	
+	cout<<"The Username you Entered Does Not Exist !\n Please Enter the Username of The User To Edit His Username :\t";
+	cin>>name;
+	edit_username(name);
+	}
+	string new_name;
+	cout<<"Please Enter The New Username :\t";
+	cin>>new_name;
+
+	if (System::search_user(new_name))
+	{
+		cout<<"The Username Must be a Unique Name :\n";
+		edit_username(name);
+	}
+	System::allUsers[name].setUserName(new_name);
+	cout << "the Username has been Changed Sucessfully \n";
+	return;
 }
 
-void Admin::edit_password()
+void Admin::edit_password(string name)
 {
-	string name, new_pass;
-	cout << "Please Enter The Username of the User to Edit His Password :\t";
-	cin >> name;
-
-	//check the name fun
-
+	if (!System::search_user(name))
+	{
+		cout << "The Username you Entered Does Not Exist !\n Please Enter the Username of The User To Edit His Username :\t";
+		cin >> name;
+		edit_password(name);
+	}
+	string new_pass;
 	cout << "Please Enter The New Password :\t";
 	cin >> new_pass;
-	//check the new pass is valid
 
 	System::allUsers[name].setpassword(new_pass);
-	cout << "The Password Has Been Changed Successuflly \n";
-	cout << "The new Password of The User is :\t" << new_pass << "\n";
+	cout << "the Password has been Changed Sucessfully \n";
+	return;
 }
 
 void Admin::add_user()
@@ -164,18 +160,24 @@ void Admin::view_all_transactions()
 
 }
 
-void Admin::edit_balance()
+void Admin::edit_balance(string name)
 {
-	string name;
+	
+	if (!System::search_user(name))
+	{
+		cout << "The Username you Entered Does Not Exist !\n";
+		cin >> name;
+		edit_balance(name);
+	}
 	double new_balance;
-	cout << "Please Enter The Username of The User You Want to Edit His Balance :\t";
-
-	cin >> name;
-
 	cout << "Please Enter The Nem Balance :\t";
-	//check the username func
 	cin >> new_balance;
 
+	if(new_balance<0)
+	{
+		cout << "the balance must be a valid number !\n";
+		edit_balance(name);
+	}
 	System::allUsers[name].setbalance(new_balance);
 
 	cout << "The User Balance Has Been Modified \n";

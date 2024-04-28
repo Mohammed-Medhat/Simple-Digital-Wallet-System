@@ -17,6 +17,7 @@ class User
 {
 public:
 	string UserName, Password;
+	bool susbended;
 	double balance;
 	Transaction transactions;
 	vector <Transaction> History;

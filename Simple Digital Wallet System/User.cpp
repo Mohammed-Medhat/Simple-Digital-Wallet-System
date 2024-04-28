@@ -3,6 +3,7 @@
 
 User::User()
 {
+	susbended = false;
 }
 
 User::User(string UserName, string Password, double balance)
@@ -124,13 +125,7 @@ void User::Send(string& reciever, double& amount)
 
 bool User::checkSuspendedAccounts(string Reciever)
 {
-	map<string, User>::iterator R;
-	R = Admin::suspended_users.find(Reciever);
-	if (R == Admin::suspended_users.end())
-		return false;
-	else
-		return true;
-
+		return susbended;	
 }
 
 

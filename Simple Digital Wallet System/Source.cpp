@@ -8,7 +8,7 @@ using namespace std;
 System sys;
 Admin aali("admin", "admin");
 void home_page();
-void user(User user) {
+void user(User &user) {
 	bool done = true;
 	while (done) {
 		int choice, choice2;
@@ -110,7 +110,7 @@ void user(User user) {
 	}
 }
 
-void admin(Admin ali)
+void admin(Admin &ali)
 {
 	int choice;
 	cout << "\n\nPlease Enter :" << endl;
@@ -151,8 +151,9 @@ void admin(Admin ali)
 			{
 				cout << "Please Enter The Username of The User to Edit his Username\n";
 				string name;
+				cin >> name;
 				ali.edit_username(name);
-				admin(aali);
+				return admin(aali);
 
 				break;
 			}
@@ -160,8 +161,9 @@ void admin(Admin ali)
 			{
 				cout << "Please Enter The Username of The User to Edit his Password\n";
 				string name;
+				cin >> name;
 				ali.edit_password(name);
-				admin(aali);
+				return admin(aali);
 
 				break;
 			}
@@ -171,19 +173,19 @@ void admin(Admin ali)
 				string name;
 				cin >> name;
 				ali.edit_balance(name);
-				admin(aali);
+				return admin(aali);
 			}
 			case 4:
 			{
 				valid_choice = false; // Exit inner loop
 				cout << "Exiting edit account menu..." << endl;
-				admin(aali);
+				return admin(aali);
 				break;
 			}
 			default:
 			{
 				cout << "Invalid choice. Please try again." << endl;
-				admin(aali);
+				return admin(aali);
 				break;
 			}
 			}
@@ -191,32 +193,30 @@ void admin(Admin ali)
 		case 3:
 		{
 			ali.add_user();
-			admin(aali);
+			return admin(aali);
 			break;
 		}
 		case 4:
 		{
 			ali.delete_user();
-			admin(aali);
+			return admin(aali);
 			break;
 		}
 		case 5:
 		{
 			ali.suspend_user();
-			admin(aali);
-			break;
+			return admin(aali);
+			
 		}
 		case 6:
 		{
 			ali.reactivated();
-			admin(aali);
-			break;
+			return admin(aali);
 		}
 		case 7:
 		{
 			ali.view_all_transactions();
-			admin(aali);
-			break;
+			return admin(aali);
 		}
 		case 8:
 		{
@@ -236,7 +236,7 @@ void admin(Admin ali)
 				cin >> name;
 				ali.set_username(name);
 				cout << "the Username has Changed Sucssesfully \n";
-				admin(aali);
+				return admin(aali);
 
 				break;
 			}
@@ -247,7 +247,7 @@ void admin(Admin ali)
 				cin >> pass;
 				ali.set_password(pass);
 				cout << "the password has Changed Sucssesfully \n";
-				admin(aali);
+				return admin(aali);
 
 
 				break;
@@ -256,38 +256,39 @@ void admin(Admin ali)
 			{
 				valid_choice = false; // Exit inner loop
 				cout << "Exiting edit account menu..." << endl;
-				admin(aali);
+				return admin(aali);
 				break;
 			}
 			default:
 			{
 				cout << "Invalid choice. Please try again." << endl;
-				admin(aali);
+				return admin(aali);
 				break;
 			}
 			break;
 			}
 
-			admin(aali);
+			return admin(aali);
 			break;
 		}
 		case 9:
 		{
 			valid_choice = false; // Exit outer loop
 			cout << "Admin loged out sucssesfully ! " << endl;
-			home_page();
+			return home_page();
 			break;
 		}
 		case 10:
 		{
 			valid_choice = false; // Exit outer loop
 			cout << "Exiting admin menu..." << endl;
+			return home_page();
 			break;
 		}
 		default:
 		{
 			cout << "Invalid choice. Please try again." << endl;
-			admin(aali);
+			return admin(aali);
 			break;
 		}
 		}
@@ -330,6 +331,7 @@ void home_page() {
 		}
 		else
 		{
+			cout << "invalid username or password please try again !\n\n";
 			home_page();
 		}
 		break;

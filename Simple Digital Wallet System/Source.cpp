@@ -8,7 +8,6 @@ using namespace std;
 System sys;
 Admin aali("admin", "admin");
 void home_page();
-void admin(Admin admin);
 void user(User user) {
 	bool done = true;
 	while (done) {
@@ -67,14 +66,14 @@ void user(User user) {
 				switch (choice2) {
 				case 1: {
 
-					Admin::edit_username();
+					//Admin::edit_username();
 					break;
 				}
 				case 2: {
-					string new_pass;
-					cout << "Please enter your new password: ";
-					cin >> new_pass;
-					Admin::edit_password();
+					std::string new_pass;
+					std::cout << "Please enter your new password: ";
+					std::cin >> new_pass;
+					//Admin::edit_password();
 					break;
 				}
 				case 3:
@@ -111,18 +110,20 @@ void user(User user) {
 	}
 }
 
-void admin(Admin admin) {
+void admin(Admin ali)
+{
 	int choice;
-	cout << "Please Enter:" << endl;
-	cout << "1. View all accounts data" << endl;
-	cout << "2. Edit account" << endl;
-	cout << "3. Add a new user" << endl;
-	cout << "4. Delete a user" << endl;
-	cout << "5. Suspend an account" << endl;
-	cout << "6. Reactivate an account" << endl;
-	cout << "7. View all transactions" << endl;
-	cout << "8. Edit admin account" << endl;
-	cout << "9. Exit" << endl;
+	cout << "\n\nPlease Enter :" << endl;
+	cout << "1: to View all accounts data" << endl;
+	cout << "2: to Edit account" << endl;
+	cout << "3: to  Add a new user" << endl;
+	cout << "4: to  Delete a user" << endl;
+	cout << "5: to  Suspend an account" << endl;
+	cout << "6: to  Reactivate an account" << endl;
+	cout << "7: to  View all transactions" << endl;
+	cout << "8: to  Edit admin account" << endl;
+	cout << "9: to Logout" << endl;
+	cout << "10: to Exit" << endl;
 
 	bool valid_choice = true;
 	while (valid_choice) {
@@ -130,9 +131,13 @@ void admin(Admin admin) {
 
 		switch (choice) {
 		case 1:
-			admin.view_Accounts_Data();
+		{
+			ali.view_Accounts_Data();
+			admin(aali);
 			break;
+		}
 		case 2:
+		{
 			int choice1;
 			cout << "1. Edit username" << endl;
 			cout << "2. Edit password" << endl;
@@ -144,54 +149,147 @@ void admin(Admin admin) {
 			switch (choice1) {
 			case 1:
 			{
-				string new_name; // Declare new_name inside the case block
-				cout << "Please enter the new name: ";
-				cin >> new_name;
-				admin.set_username(new_name);
+				cout << "Please Enter The Username of The User to Edit his Username\n";
+				string name;
+				ali.edit_username(name);
+				admin(aali);
+
+				break;
 			}
-			break;
 			case 2:
 			{
-				string new_password; // Declare new_password inside the case block
-				cout << "Please enter the new password: ";
-				cin >> new_password;
-				admin.set_password(new_password);
+				cout << "Please Enter The Username of The User to Edit his Password\n";
+				string name;
+				ali.edit_password(name);
+				admin(aali);
+
+				break;
 			}
-			break;
 			case 3:
+			{
+				cout << "Please Enter The Username of The User to Edit his Balance\n";
+				string name;
+				cin >> name;
+				ali.edit_balance(name);
+				admin(aali);
+			}
+			case 4:
+			{
 				valid_choice = false; // Exit inner loop
 				cout << "Exiting edit account menu..." << endl;
+				admin(aali);
 				break;
+			}
 			default:
+			{
 				cout << "Invalid choice. Please try again." << endl;
+				admin(aali);
+				break;
+			}
+			}
+		}
+		case 3:
+		{
+			ali.add_user();
+			admin(aali);
+			break;
+		}
+		case 4:
+		{
+			ali.delete_user();
+			admin(aali);
+			break;
+		}
+		case 5:
+		{
+			ali.suspend_user();
+			admin(aali);
+			break;
+		}
+		case 6:
+		{
+			ali.reactivated();
+			admin(aali);
+			break;
+		}
+		case 7:
+		{
+			ali.view_all_transactions();
+			admin(aali);
+			break;
+		}
+		case 8:
+		{
+			int choice2;
+			cout << "1. Edit Admin username" << endl;
+			cout << "2. Edit Admin password" << endl;
+			cout << "3. Exit" << endl;
+
+			cin >> choice2;
+
+			switch (choice2)
+			{
+			case 1:
+			{
+				cout << "Please Enter The new Username of Admin :\t";
+				string name;
+				cin >> name;
+				ali.set_username(name);
+				cout << "the Username has Changed Sucssesfully \n";
+				admin(aali);
+
+				break;
+			}
+			case 2:
+			{
+				cout << "Please Enter The new password of Admin :\t";
+				string pass;
+				cin >> pass;
+				ali.set_password(pass);
+				cout << "the password has Changed Sucssesfully \n";
+				admin(aali);
+
+
+				break;
+			}
+			case 3:
+			{
+				valid_choice = false; // Exit inner loop
+				cout << "Exiting edit account menu..." << endl;
+				admin(aali);
+				break;
+			}
+			default:
+			{
+				cout << "Invalid choice. Please try again." << endl;
+				admin(aali);
 				break;
 			}
 			break;
-		case 3:
-			admin.add_user();
+			}
+
+			admin(aali);
 			break;
-		case 4:
-			admin.delete_user();
-			break;
-		case 5:
-			admin.suspend_user();
-			break;
-		case 6:
-			admin.reactivated();
-			break;
-		case 7:
-			admin.view_all_transactions();
-			break;
-		case 8:
-			// Implement admin account editing functionality
-			break;
+		}
 		case 9:
+		{
+			valid_choice = false; // Exit outer loop
+			cout << "Admin loged out sucssesfully ! " << endl;
+			home_page();
+			break;
+		}
+		case 10:
+		{
 			valid_choice = false; // Exit outer loop
 			cout << "Exiting admin menu..." << endl;
 			break;
+		}
 		default:
+		{
 			cout << "Invalid choice. Please try again." << endl;
+			admin(aali);
 			break;
+		}
 		}
 	}
 }
@@ -252,7 +350,7 @@ void home_page() {
 		break;
 	}
 	default: {
-		cout << "invalid choice";
+		cout << "invalid choice\n";
 		home_page();
 	}
 
@@ -265,7 +363,11 @@ void main() {
 	
 	System::readUsersFromFile(); 
 	System::readAllTransactions();
-	
+	string x = "a7a";
+	string y = "messi";
+
+	System::addUser(x, x, 1000);
+	System::addUser(y, y, 1000);
 	for(Transaction &t:System::allTransactions)
 	{
 		// Get sender and receiver from the transaction
@@ -291,13 +393,7 @@ void main() {
 		receiver->addTransactionToHistory(t);
 	
 	}
-	
 
-	
-
-	
-	
-	
 	home_page();
 	
 

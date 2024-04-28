@@ -10,6 +10,7 @@ User::User(string UserName, string Password, double balance)
 	this->UserName = UserName;
 	this->Password = Password;
 	this->balance = balance;
+
 }
 
 void User::BalanceAfterTransaction(double newBalance)
@@ -136,7 +137,7 @@ bool User::checkSuspendedAccounts(string Reciever)
 void User::ViewHistory()
 {
 	if (History.empty()) {
-		cout << "There is no transaction made/n";
+		cout << "There is no transaction made\n";
 		return;
 	}
 	else {
@@ -173,7 +174,7 @@ void User::CheckOut(string reciever)
 	cout << "Paid Amount: " << transactions.getAmount()<<endl;
 	cout << "Time: " << TransactionDate.hour << ":" << TransactionDate.min << endl;
 	cout << "Date: " << TransactionDate.month << "/" << TransactionDate.day << "/" << TransactionDate.year << endl;
-	cout << "confirm transaction" << endl << "press 1 to confirm / 0 to delete transaction";
+	cout << "confirm transaction" << endl << "press 1 to confirm / 0 to delete transaction\n";
 
 	cin >> T;
 	

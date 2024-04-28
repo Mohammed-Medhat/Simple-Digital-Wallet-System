@@ -13,27 +13,27 @@ void user(User user) {
 	bool done = true;
 	while (done) {
 		int choice, choice2;
-		std::cout << "Welcome!" << std::endl;
-		std::cout << "Please Enter :" << std::endl;
-		std::cout << "1 - Send Money" << std::endl;
-		std::cout << "2 - Request Money" << std::endl;
+		cout << "Welcome!" << endl;
+		cout << "Please Enter :" << endl;
+		cout << "1 - Send Money" << endl;
+		cout << "2 - Request Money" << endl;
 		cout << "3 - Check Requests \n";
-		std::cout << "4 - Edit Username or Password" << std::endl;
-		std::cout << "5 - View Current Balance" << std::endl;
-		std::cout << "6 - View Transaction History" << std::endl;
-		std::cout << "7 - Logout" << std::endl;
+		cout << "4 - Edit Username or Password" << endl;
+		cout << "5 - View Current Balance" << endl;
+		cout << "6 - View Transaction History" << endl;
+		cout << "7 - Logout" << endl;
 		cout << "8 - close app" << endl;
-		std::cin >> choice;
+		cin >> choice;
 
 		switch (choice) {
 		case 1: {
-			std::string name;
+			string name;
 			double amount=-1;
-			std::cout << "Please enter the recipient's username: ";
-			std::cin >> name;
+			cout << "Please enter the recipient's username: ";
+			cin >> name;
 			while (amount <=0 ) {
-				std::cout << "Please enter the amount of money: ";
-				std::cin >> amount;
+				cout << "Please enter the amount of money: ";
+				cin >> amount;
 				if (amount<=0)
 				{
 					cout << "amount of money cannot = 0 or negative please try again\n ";
@@ -43,12 +43,12 @@ void user(User user) {
 			break;
 		}
 		case 2: {
-			std::string name;
+			string name;
 			double amount;
-			std::cout << "Please enter the sender's username: ";
-			std::cin >> name;
-			std::cout << "Please enter the amount of money: ";
-			std::cin >> amount;
+			cout << "Please enter the sender's username: ";
+			cin >> name;
+			cout << "Please enter the amount of money: ";
+			cin >> amount;
 			System::loggedInUser->RequestMoney(name, amount);
 			break;
 		}
@@ -58,10 +58,10 @@ void user(User user) {
 		case 4: {
 			bool valid_choice2 = true;
 			while (valid_choice2) {
-				std::cout << "Please choose:\n";
-				std::cout << "1 - Edit Username\n";
-				std::cout << "2 - Edit Password\n3 - Exit\n ";
-				std::cin >> choice2;
+				cout << "Please choose:\n";
+				cout << "1 - Edit Username\n";
+				cout << "2 - Edit Password\n3 - Exit\n ";
+				cin >> choice2;
 
 
 				switch (choice2) {
@@ -71,9 +71,9 @@ void user(User user) {
 					break;
 				}
 				case 2: {
-					std::string new_pass;
-					std::cout << "Please enter your new password: ";
-					std::cin >> new_pass;
+					string new_pass;
+					cout << "Please enter your new password: ";
+					cin >> new_pass;
 					Admin::edit_password();
 					break;
 				}
@@ -81,7 +81,7 @@ void user(User user) {
 
 					break;
 				default:
-					std::cout << "Invalid input!" << std::endl;
+					cout << "Invalid input!" << endl;
 					break;
 				}
 				if (choice2 == 3)
@@ -90,7 +90,7 @@ void user(User user) {
 			break;
 		}
 		case 5:
-			std::cout << "Your current balance is: " << System::loggedInUser->ViewCurrentBalance() << std::endl;
+			cout << "Your current balance is: " << System::loggedInUser->ViewCurrentBalance() << endl;
 			break;
 		case 6:
 			System::loggedInUser->ViewHistory();
@@ -99,11 +99,11 @@ void user(User user) {
 			home_page(); // Assuming home_page() is a function to handle logout
 			break;
 		case 8:
-			done = false;
+			return;
 			break;
 		
 		default:
-			std::cout << "Invalid input!" << std::endl;
+			cout << "Invalid input!" << endl;
 			break;
 		}
 		if (done == 0)
@@ -201,7 +201,7 @@ void home_page() {
 
 	int choice;
 	cout << "Welcome!" << endl;
-	cout << "Pleaes Enter : " << endl;
+	cout << "Please Enter : " << endl;
 	cout << "1-to Log-in as User" << endl;
 	cout << "2-to Log-in as Admin" << endl;
 	cout << "3-for Registering" << endl;
@@ -269,8 +269,8 @@ void main() {
 	for(Transaction &t:System::allTransactions)
 	{
 		// Get sender and receiver from the transaction
-		std::string senderName = t.getSender();
-		std::string receiverName = t.getReciever();
+		string senderName = t.getSender();
+		string receiverName = t.getReciever();
 
 		// Get sender user from the system
 		User* sender = System::getUser(senderName);

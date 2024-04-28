@@ -57,7 +57,7 @@ void User::Send(string& reciever, double& amount)
 {
 
 	bool T;
-
+	
 	map<string, User>::iterator FindingUser;
 	FindingUser = System::allUsers.find(reciever);
 
@@ -197,8 +197,7 @@ void User::CheckOut(string reciever)
 		
 		Reciever->History.push_back(transactions);
 		System::allTransactions.push_back(transactions);
-		cout << transactions.sender << endl;
-		cout << transactions.reciever<<endl;
+		
 
 	}
 
@@ -222,7 +221,7 @@ void User::RequestMoney(string& sender, double amount) {
 
 	map<string, User>::iterator R;
 	 R = System::allUsers.find(sender);
-	User FindingUser = R->second;
+	User *FindingUser = &R->second;
 
 	if (R == System::allUsers.end()) {
 		cout << "The User is not found" << endl << "Do you want to continue? press 1 / 0 to exit";
@@ -278,7 +277,7 @@ void User::RequestMoney(string& sender, double amount) {
 		transactions.setAmount(amount);
 		transactions.SetSender(getUserName());
 
-		FindingUser.pendingRequests.push_back(transactions);
+		FindingUser->pendingRequests.push(transactions);
 		// display out pending request in system
 	}
 
@@ -293,20 +292,19 @@ void User::acceptRequest(Transaction transactions) {
 
 	double newBalanceOfReciever = ViewCurrentBalance() - transactions.getAmount();
 	BalanceAfterTransaction(newBalanceOfReciever);
-	map<string, User>::iterator R;
-	 R = System::allUsers.find(transactions.getSender());
+	
 
 
-	User FindingUser = R->second;
+	User *FindingUser = System::getUser(transactions.getSender());
 
 	double newBalanceOfSender = ViewCurrentBalance() + transactions.getAmount();
-	FindingUser.BalanceAfterTransaction(newBalanceOfSender);
+	FindingUser->BalanceAfterTransaction(newBalanceOfSender);
 
 	cout << "transaction completed successfully";
 
 	History.push_back(transactions);
-	FindingUser.History.push_back(transactions);
-	declineRequest(transactions);
+	FindingUser->History.push_back(transactions);
+	pendingRequests.pop();
 
 }
 
@@ -319,55 +317,57 @@ void User::addTransactionToHistory( Transaction transaction)
 
 void User::addPendingRequest( Transaction transaction)
 {
-		pendingRequests.push_back(transaction);
+		pendingRequests.push(transaction);
 
 }
 
 string User::serializeToString() const
 {
-	std::ostringstream oss;
+	ostringstream oss;
 	oss << UserName << "|" << Password << "|" << balance << "\n";
 
 	for (const auto& transaction : History) {
 		oss << "History:" << transaction.serializeToString() << "\n";
 	}
-
-	for (const auto& request : pendingRequests) {
+	queue<Transaction> tempQueue = pendingRequests;
+	while (!tempQueue.empty()) {
+		const auto& request = tempQueue.front();
 		oss << "PendingRequest:" << request.serializeToString() << "\n";
+		tempQueue.pop();
 	}
 
 	return oss.str();
 }
 
-User User::deserializeFromString(const std::string& str)
+User User::deserializeFromString(const string& str)
 {
-	std::istringstream iss(str);
-	std::string token;
+	istringstream iss(str);
+	string token;
 
 	// Read UserName
-	std::getline(iss, token, '|');
-	std::string userName = token;
+	getline(iss, token, '|');
+	string userName = token;
 
 	// Read Password
-	std::getline(iss, token, '|');
-	std::string password = token;
+	getline(iss, token, '|');
+	string password = token;
 
 	// Read balance
-	std::getline(iss, token, '|');
-	double balance = std::stod(token);
+	getline(iss, token, '|');
+	double balance = stod(token);
 
 	User user(userName, password, balance);
 
 	// Read remaining lines for History and PendingRequest
-	while (std::getline(iss, token)) {
+	while (getline(iss, token)) {
 		if (!token.empty()) {
 			if (token.find("History:") == 0) {
-				std::string historyData = token.substr(8); // Extract the transaction part
+				string historyData = token.substr(8); // Extract the transaction part
 				Transaction historyTransaction = Transaction::deserializeFromString(historyData);
 				user.addTransactionToHistory(historyTransaction);
 			}
 			else if (token.find("PendingRequest:") == 0) {
-				std::string requestData = token.substr(15); // Extract the transaction part
+				string requestData = token.substr(15); // Extract the transaction part
 				Transaction requestTransaction = Transaction::deserializeFromString(requestData);
 				user.addPendingRequest(requestTransaction);
 			}
@@ -389,36 +389,35 @@ void User::viewPendingRequests() {
 	}
 	else 
 	{
-		for (auto it = pendingRequests.begin(); it != pendingRequests.end(); it++) {
+		while (!pendingRequests.empty()) {
 			int i = 1;
-			cout << "Request " << (i + 1) << ": Sender: " << (*it).getSender() << ", Amount: " << (*it).getAmount() << endl;
+			Transaction request = pendingRequests.front(); // Get the front element of the queue
+			
+			cout << "Request " << (i + 1) << ": Sender: " << request.getSender() << ", Amount: " << request.getAmount() << endl;
 			cout << "Do you want to Accept(A) or Decline(D) this request? (A/D): ";
 			char choice;
 			cin >> choice;
 			if (choice == 'A' || choice == 'a') {
-				acceptRequest((*it));
+				pendingRequests.pop();
 				cout << "Request accepted." << endl;
 			}
+
 			else if (choice == 'D' || choice == 'd') {
-				declineRequest((*it));
+				pendingRequests.pop();
 				cout << "Request declined." << endl;
 			}
-			else {
-				cout << "Skipping Request" << endl;
-			}
+			
 			i++;
 		
+		}
+		if (pendingRequests.empty()) {
+			cout << "No more pending requests." << endl;
 		}
 
 	}
 }
 
-void User::declineRequest(Transaction transactions) {
-	auto it = find(pendingRequests.begin(), pendingRequests.end(), transactions);
-	if (it != pendingRequests.end()) {
-		pendingRequests.erase(it);
-	}
-}
+
 User::~User(void) {
 	
 }

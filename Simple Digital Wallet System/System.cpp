@@ -82,24 +82,24 @@ void System::readAllTransactions()
 {
     string filename ="Transactions.txt" ;
     // Open the file for reading
-    std::ifstream inFile(filename);
+    ifstream inFile(filename);
     if (!inFile.is_open()) {
-        std::cerr << "Error: Unable to open file " << filename << " for reading." << std::endl;
+        cerr << "Error: Unable to open file " << filename << " for reading." << endl;
         return;
     }
 
     allTransactions.clear(); // Clear existing transactions before reading new ones
 
-    std::string line;
-    while (std::getline(inFile, line)) {
+    string line;
+    while (getline(inFile, line)) {
         if (!line.empty()) {
             try {
                 // Deserialize each line into a Transaction object and add to vector
                 Transaction transaction = Transaction::deserializeFromString(line);
                 allTransactions.push_back(transaction);
             }
-            catch (const std::exception& e) {
-                std::cerr << "Error reading transaction: " << e.what() << std::endl;
+            catch (const exception& e) {
+                cerr << "Error reading transaction: " << e.what() << endl;
             }
         }
     }
@@ -111,17 +111,17 @@ void System::writeAllTransactions()
 {
     string filename = "Transactions.txt";
     // Open the file for writing
-    std::ofstream outFile(filename);
+    ofstream outFile(filename);
     if (!outFile.is_open()) {
-        std::cerr << "Error: Unable to open file " << filename << " for writing." << std::endl;
+        cerr << "Error: Unable to open file " << filename << " for writing." << endl;
         return;
     }
 
     for (const auto& transaction : allTransactions) {
         // Serialize the transaction to string and write to file
-        std::string serializedTransaction = transaction.serializeToString();
+        string serializedTransaction = transaction.serializeToString();
         if (!serializedTransaction.empty()) {
-            outFile << serializedTransaction << std::endl;
+            outFile << serializedTransaction << endl;
         }
     }
 
@@ -132,9 +132,9 @@ void System::writeAllTransactions()
 void System::readUsersFromFile()
 {
     string filename = "Users.txt";
-    std::ifstream file(filename);
+    ifstream file(filename);
     if (!file.is_open()) {
-        std::cerr << "Error: Unable to open file " << filename << " for reading." << std::endl;
+        cerr << "Error: Unable to open file " << filename << " for reading." << endl;
         return;
     }
 
@@ -142,15 +142,15 @@ void System::readUsersFromFile()
     allUsers.clear();
 
     // Read user data from file
-    std::string line;
-    while (std::getline(file, line)) {
+    string line;
+    while (getline(file, line)) {
         try {
             User user = User::deserializeFromString(line);
             allUsers[user.getUserName()] = user;
-           // std::cout << "Read user: " << user.getUserName() << std::endl;
+           // cout << "Read user: " << user.getUserName() << endl;
         }
-        catch (const std::exception& e) {
-           // std::cerr << "Error reading user from file: " << e.what() << std::endl;
+        catch (const exception& e) {
+           // cerr << "Error reading user from file: " << e.what() << endl;
         }
     }
 
@@ -162,15 +162,15 @@ void System::writeUsersToFile()
     string filename = "Users.txt";
     ofstream file(filename);
     if (!file.is_open()) {
-        std::cerr << "Error: Unable to open file " << filename << " for writing." << std::endl;
+        cerr << "Error: Unable to open file " << filename << " for writing." << endl;
         return;
     }
 
     // Write each user from allUsers map to file
     for (const auto& pair : allUsers) {
         const User& user = pair.second;
-        std::string userData = user.serializeToString();
-        file << userData << std::endl;
+        string userData = user.serializeToString();
+        file << userData << endl;
         //cout << "added\n";
     }
 
@@ -199,7 +199,7 @@ void System::Register(string& username, string& password, double balance) {
 
 bool System::Login(string username, string password) {
     auto it = allUsers.find(username);
-    int chooice;
+    string chooice;
     if (it != allUsers.end() && it->second.Password == password) {
         loggedInUser = &(it->second);
         cout << "User '" << username << "' logged in successfully." << endl;
@@ -208,15 +208,16 @@ bool System::Login(string username, string password) {
     else {
         cout << "Invalid username or email. Login failed.\npress 0 to exit and others to retry" << endl;
         cin >> chooice;
-        if(chooice==0)
+        if(chooice[0] == '0')
         return false;
         else
         {
             cout << "please enter your name : ";
             cin >> username;
             cout << "please enter your password : ";
-            cin >> password;;
-            System::Login(username, password);
+            cin >> password;
+            if(!System::Login(username, password))
+                return false;
         }
     }
 }

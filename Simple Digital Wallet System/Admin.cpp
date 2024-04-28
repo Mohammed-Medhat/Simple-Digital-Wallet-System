@@ -88,7 +88,7 @@ void Admin::edit_password()
 	//check the new pass is valid
 
 	System::allUsers[name].setpassword(new_pass);
-	cout << "The Password Has Been Changed Successuflly \n";
+	cout << "The Password Has Been Changed Successfully \n";
 	cout << "The new Password of The User is :\t" << new_pass << "\n";
 }
 

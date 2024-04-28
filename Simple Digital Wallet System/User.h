@@ -4,7 +4,7 @@
 #include <vector>
 #include "Transaction.h"
 #include <map>
-#include <list>
+#include <queue>
 #include "Admin.h"
 #include "System.h"
 #include <string>
@@ -20,7 +20,7 @@ public:
 	double balance;
 	Transaction transactions;
 	vector <Transaction> History;
-	list<Transaction> pendingRequests;
+	queue<Transaction> pendingRequests;
 
 public:
 
@@ -42,12 +42,12 @@ public:
 
 
 	string serializeToString() const;
-    static User deserializeFromString(const std::string& str); 
+    static User deserializeFromString(const string& str); 
 	bool checkSuspendedAccounts(string Reciever);
 	bool CheckBalance(double amount);
 	void CheckOut(string reeciever);
 	void BalanceAfterTransaction(double newBalance);
-	void declineRequest(Transaction transaction);
+	
 	void viewPendingRequests();
 	void ViewHistory();
 	~User();

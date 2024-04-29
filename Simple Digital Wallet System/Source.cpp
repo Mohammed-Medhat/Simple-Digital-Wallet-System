@@ -368,25 +368,25 @@ void main() {
 	System::readPendingRequests();
 	for(Transaction &t:System::allTransactions)
 	{
-		 Get sender and receiver from the transaction
+		// Get sender and receiver from the transaction
 		string senderName = t.getSender();
 		string receiverName = t.getReciever();
 
-		 Get sender user from the system
+		 //Get sender user from the system
 		User* sender = System::getUserForTrans(senderName);
 		if (sender == nullptr) {
 			
 			continue; // Skip to the next transaction
 		}
 
-		 Get receiver user from the system
+		// Get receiver user from the system
 		User* receiver = System::getUserForTrans(receiverName);
 		if (receiver == nullptr) {
 			
 			continue; // Skip to the next transaction
 		}
 
-		 Add transaction to sender's and receiver's history
+		// Add transaction to sender's and receiver's history
 		sender->addTransactionToHistory(t);
 		receiver->addTransactionToHistory(t);
 	

@@ -246,7 +246,7 @@ void System::Register(string& username, string& password, double balance) {
         cout << "User '" << username << "' already exists." << endl;
         cout << "please enter another username :\n";
         cin >> username;
-        Register(username, password, balance);
+        return Register(username, password, balance);
     }
     else {
         User user(username, password, balance);

@@ -13,8 +13,6 @@ private:
 	string password;
 public:
 	
-	static map<string,User> suspended_users;
-
 	Admin();
 	Admin(string, string);
 	

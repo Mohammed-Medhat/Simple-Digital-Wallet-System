@@ -189,7 +189,21 @@ void User::Send(string& reciever, double& amount)
 			exit; //redirect to home page
 		}
 	}
-
+	else if(UserName==FindingUser->second.getUserName())
+	{
+		cout << "You can not send money to yourself\n";
+		cout << "Do you want to continue? press 1 / 0 to exit";
+		cin >> T;
+		if (T == 1) {
+			cin >> reciever;
+			cin >> amount;
+			Send(reciever, amount);
+		}
+		else
+		{
+			exit; //redirect to home page
+		}
+	}
 
 
 	else
@@ -320,6 +334,21 @@ void User::RequestMoney(string& sender, double amount) {
 	else if (checkSuspendedAccounts(sender))
 	{
 		cout << "This account was inactive" << endl << "Do you want to continue? press 1 / 0 to exit";
+		cin >> T;
+		if (T == 1) {
+			cin >> sender;
+			cin >> amount;
+			RequestMoney(sender, amount);
+		}
+		else
+		{
+			exit; //redirect to home page
+		}
+	}
+	else if(FindingUser->getUserName()==UserName)
+	{
+		cout << "You can not send request to yourself\n";
+		cout << "Do you want to continue? press 1 / 0 to exit";
 		cin >> T;
 		if (T == 1) {
 			cin >> sender;

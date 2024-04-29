@@ -18,6 +18,87 @@ void User::BalanceAfterTransaction(double newBalance)
 	this->balance = newBalance;
 }
 
+void User::editUsername()
+{
+	
+	string new_name;
+	cout << "Please Enter The New Username :\t";
+	cin >> new_name;
+
+	if (System::search_user(new_name))
+	{
+		cout << "The Username already exist :\n";
+		editUsername();
+		return;
+	}
+	string oldName = UserName;
+	//handling transaction history after edit name 
+	{
+		for (int i = 0; i < System::allTransactions.size(); i++) {
+			if (System::allTransactions[i].getSender() == oldName) {
+				System::allTransactions[i].SetSender(new_name);
+			}
+			else if (History[i].getReciever() == oldName)
+				System::allTransactions[i].getReciever() = new_name;
+		}
+		for (int i = 0; i < History.size(); i++) {
+			if (History[i].getSender() == oldName) {
+				User* R = System::getUser(History[i].getReciever());
+				History[i].SetSender(new_name);
+				for (int j = 0; j < R->History.size(); j++) {
+					if (R->History[j].getSender() == oldName)
+						R->History[j].sender = new_name;
+				}
+			}
+			else if (History[i].getReciever() == oldName) {
+				User* R = System::getUser(History[i].getSender());
+				History[i].reciever = new_name;
+				for (int j = 0; j < R->History.size(); j++) {
+					if (R->History[j].reciever == oldName)
+						R->History[j].reciever = new_name;
+				}
+
+			}
+		}
+	}
+	//handling pending transaction after edit name
+	{
+		/*for (int i = 0; i < System::allPendingRequests.size(); i++) {
+			if (System::allPendingRequests[i].getSender() == oldName) {
+				System::allPendingRequests[i].SetSender(new_name);
+			}
+			
+		}
+		queue<Transaction>temp;
+		while (!pendingRequests.empty()) {
+			temp.push(pendingRequests.front());
+			temp.front().SetSender(new_name);
+			pendingRequests.pop();
+		}
+		while(!temp.empty())
+		{
+			pendingRequests.push(temp.front());
+			temp.pop();
+			
+		}*/
+	
+	}
+	System::allUsers[System::loggedInUser->getUserName()].setUserName(new_name);
+	cout << "the Username has been Changed Successfully \n";
+	return;
+}
+
+void User::editPassword()
+{
+	string new_pass;
+	cout << "Please Enter The New Password :\t";
+	cin >> new_pass;
+
+	System::allUsers[System::loggedInUser->getUserName()].setpassword(new_pass);
+	cout << "the Password has been Changed Successfully \n";
+	return;
+}
+
 double User::ViewCurrentBalance()
 {
 	return balance;
@@ -54,6 +135,7 @@ void User::userData()
 	cout << "Balance: " << ViewCurrentBalance()<<endl;
 	ViewHistory();
 }
+
 void User::Send(string& reciever, double& amount)
 {
 
@@ -254,30 +336,16 @@ void User::RequestMoney(string& sender, double amount) {
 			exit; //redirect to home page
 		}
 	}
-	else if (!CheckBalance(amount))
-	{
-		cout << "Your balance is not enough" << endl << "Do you want to continue? press 1 / 0 to exit";
-		cin >> T;
-		if (T == 1) {
-			cin >> sender;
-			cin >> amount;
-			RequestMoney(sender, amount);
-		}
-		else
-		{
-			exit; //redirect to home page
-		}
-	}
-
-
+	
 
 	else
 	{
 		
-		cout << "Request is sent successfully";
+		cout << "Request is sent successfully\n";
 		transactions.setAmount(amount);
-		transactions.SetSender(getUserName());
-
+		transactions.SetSender(FindingUser->getUserName());
+		transactions.reciever = System::loggedInUser->getUserName();
+		System::allPendingRequests.push_back(transactions);
 		FindingUser->pendingRequests.push(transactions);
 		// display out pending request in system
 	}
@@ -290,21 +358,25 @@ void User::RequestMoney(string& sender, double amount) {
 
 
 void User::acceptRequest(Transaction transactions) {
-
+	transactions.Date = Transaction::getCurrentDateTime();
 	double newBalanceOfReciever = ViewCurrentBalance() - transactions.getAmount();
 	BalanceAfterTransaction(newBalanceOfReciever);
 	
 
 
-	User *FindingUser = System::getUser(transactions.getSender());
+	User *FindingUser = System::getUser(transactions.getReciever());
 
-	double newBalanceOfSender = ViewCurrentBalance() + transactions.getAmount();
+	double newBalanceOfSender = FindingUser->ViewCurrentBalance() + transactions.getAmount();
 	FindingUser->BalanceAfterTransaction(newBalanceOfSender);
 
 	cout << "transaction completed successfully";
 
 	History.push_back(transactions);
 	FindingUser->History.push_back(transactions);
+	System::allTransactions.push_back(transactions);
+	System::allPendingRequests.erase(
+		remove(System::allPendingRequests.begin(), System::allPendingRequests.end(), transactions),
+		System::allPendingRequests.end());
 	pendingRequests.pop();
 
 }
@@ -330,12 +402,12 @@ string User::serializeToString() const
 	for (const auto& transaction : History) {
 		oss << "History:" << transaction.serializeToString() << "\n";
 	}
-	queue<Transaction> tempQueue = pendingRequests;
+	/*queue<Transaction> tempQueue = pendingRequests;
 	while (!tempQueue.empty()) {
 		const auto& request = tempQueue.front();
 		oss << "PendingRequest:" << request.serializeToString() << "\n";
 		tempQueue.pop();
-	}
+	}*/
 
 	return oss.str();
 }
@@ -394,12 +466,13 @@ void User::viewPendingRequests() {
 			int i = 1;
 			Transaction request = pendingRequests.front(); // Get the front element of the queue
 			
-			cout << "Request " << (i + 1) << ": Sender: " << request.getSender() << ", Amount: " << request.getAmount() << endl;
+			cout << "Request " << (i) << ": Sender: " << request.getReciever() << ", Amount: " << request.getAmount() << endl;
 			cout << "Do you want to Accept(A) or Decline(D) this request? (A/D): ";
 			char choice;
 			cin >> choice;
 			if (choice == 'A' || choice == 'a') {
-				pendingRequests.pop();
+				acceptRequest(pendingRequests.front());
+				
 				cout << "Request accepted." << endl;
 			}
 

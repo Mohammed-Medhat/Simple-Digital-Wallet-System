@@ -47,7 +47,8 @@ public:
 	bool CheckBalance(double amount);
 	void CheckOut(string reeciever);
 	void BalanceAfterTransaction(double newBalance);
-	
+	void editUsername();
+	void editPassword();
 	void viewPendingRequests();
 	void ViewHistory();
 	~User();

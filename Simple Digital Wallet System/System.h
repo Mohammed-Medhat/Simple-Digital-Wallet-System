@@ -21,6 +21,7 @@ public:
 	static map<string, User> allUsers;
 	static  User* loggedInUser;
 	static vector<Transaction> allTransactions;
+	static vector<Transaction> allPendingRequests;
 
 public:
 	System();
@@ -35,7 +36,10 @@ public:
 	static bool search_user(string);
 	static void readAllTransactions();
 	static void writeAllTransactions();
+	static void writePendingRequests();
+	static void readPendingRequests();
 	static void readUsersFromFile();
+	static User* getUserForTrans(string username);
 	static void writeUsersToFile();
 	//void saveData();
 	//void deleteData();

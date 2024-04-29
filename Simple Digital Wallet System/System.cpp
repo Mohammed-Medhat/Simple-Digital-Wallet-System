@@ -7,6 +7,7 @@ using namespace std;
 map<string, User> System::allUsers;
 vector<Transaction> System::allTransactions;
 User* System::loggedInUser;
+vector<Transaction>System::allPendingRequests;
 System::System() {
 
 }
@@ -56,6 +57,16 @@ User* System::getUser(string username) {
     }
     else {
         cout << "User '" << username << "' not found." << endl;
+        return nullptr;
+    }
+}
+User* System::getUserForTrans(string username) {
+    auto it = allUsers.find(username);
+    if (it != allUsers.end()) {
+        return &(it->second);
+    }
+    else {
+  
         return nullptr;
     }
 }
@@ -126,6 +137,57 @@ void System::writeAllTransactions()
     }
 
     outFile.close();
+}
+
+void System::writePendingRequests()
+{
+    string filename = "PendingRequest.txt";
+    // Open the file for writing
+    ofstream outFile(filename);
+    if (!outFile.is_open()) {
+        cerr << "Error: Unable to open file " << filename << " for writing." << endl;
+        return;
+    }
+
+    for (const auto& transaction : allPendingRequests) {
+        // Serialize the transaction to string and write to file
+        string serializedTransaction = transaction.serializeToString();
+        if (!serializedTransaction.empty()) {
+            outFile << serializedTransaction << endl;
+        }
+    }
+
+    outFile.close();
+}
+
+void System::readPendingRequests()
+{
+    string filename = "PendingRequest.txt";
+    // Open the file for reading
+    ifstream inFile(filename);
+    if (!inFile.is_open()) {
+        cerr << "Error: Unable to open file " << filename << " for reading." << endl;
+        return;
+    }
+
+    allPendingRequests.clear(); // Clear existing transactions before reading new ones
+
+    string line;
+    while (getline(inFile, line)) {
+        if (!line.empty()) {
+            try {
+                // Deserialize each line into a Transaction object and add to vector
+                Transaction transaction = Transaction::deserializeFromString(line);
+                allPendingRequests.push_back(transaction);
+            }
+            catch (const exception& e) {
+                cerr << "Error reading transaction: " << e.what() << endl;
+            }
+        }
+    }
+
+    inFile.close();
+
 }
 
 

@@ -66,14 +66,14 @@ void user(User user) {
 				switch (choice2) {
 				case 1: {
 
-					//Admin::edit_username();
+					System::loggedInUser->editUsername();
 					break;
-				}
+				}	
 				case 2: {
 					std::string new_pass;
 					std::cout << "Please enter your new password: ";
 					std::cin >> new_pass;
-					//Admin::edit_password();
+					System::loggedInUser->editPassword();
 					break;
 				}
 				case 3:
@@ -363,40 +363,61 @@ void main() {
 	
 	System::readUsersFromFile(); 
 	System::readAllTransactions();
-	string x = "a7a";
-	string y = "messi";
-
-	System::addUser(x, x, 1000);
-	System::addUser(y, y, 1000);
+	System::readPendingRequests();
 	for(Transaction &t:System::allTransactions)
+	{
+		 Get sender and receiver from the transaction
+		string senderName = t.getSender();
+		string receiverName = t.getReciever();
+
+		 Get sender user from the system
+		User* sender = System::getUserForTrans(senderName);
+		if (sender == nullptr) {
+			
+			continue; // Skip to the next transaction
+		}
+
+		 Get receiver user from the system
+		User* receiver = System::getUserForTrans(receiverName);
+		if (receiver == nullptr) {
+			
+			continue; // Skip to the next transaction
+		}
+
+		 Add transaction to sender's and receiver's history
+		sender->addTransactionToHistory(t);
+		receiver->addTransactionToHistory(t);
+	
+	}
+	for (Transaction& t : System::allPendingRequests)
 	{
 		// Get sender and receiver from the transaction
 		string senderName = t.getSender();
 		string receiverName = t.getReciever();
 
 		// Get sender user from the system
-		User* sender = System::getUser(senderName);
+		User* sender = System::getUserForTrans(senderName);
 		if (sender == nullptr) {
-			
+
 			continue; // Skip to the next transaction
 		}
 
 		// Get receiver user from the system
-		User* receiver = System::getUser(receiverName);
+		User* receiver = System::getUserForTrans(receiverName);
 		if (receiver == nullptr) {
-			
+
 			continue; // Skip to the next transaction
 		}
 
 		// Add transaction to sender's and receiver's history
-		sender->addTransactionToHistory(t);
-		receiver->addTransactionToHistory(t);
-	
+		sender->addPendingRequest(t);
+		//receiver->addTransactionToHistory(t);
+
 	}
 
 	home_page();
 	
-
+	System::writePendingRequests();
 	System::writeAllTransactions();
 	System::writeUsersToFile();
 }

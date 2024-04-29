@@ -1,24 +1,42 @@
-||-6.27744e+66
 
-History:medhat|aliii|10
 
-aliii|1234569|2360
+aliii|1234569|2120
 History:medhat|aliii|10.000000|1,17,26,4,2024
 History:medhat|aliii|50.000000|1,17,26,4,2024
 History:medhat|aliii|20.000000|1,20,26,4,2024
 History:medhat|aliii|10.000000|1,45,27,4,2024
 History:medhat|aliii|10.000000|1,49,27,4,2024
 History:medhat|aliii|1000.000000|15,30,28,4,2024
+History:medhat|aliii|20.000000|12,19,29,4,2024
+History:medhat|aliii|20.000000|12,29,29,4,2024
+History:medhat|aliii|200.000000|12,35,29,4,2024
+History:medhat|aliii|20.000000|12,38,29,4,2024
+History:aliii|medhat|200.000000|12,39,29,4,2024
+History:medhat|aliii|20.000000|12,40,29,4,2024
+History:aliii|medhat|20.000000|12,44,29,4,2024
+History:medhat|aliii|20.000000|12,45,29,4,2024
+History:aliii|medhat|20.000000|13,31,29,4,2024
+History:medhat|aliii|100.000000|13,55,29,4,2024
 
 aliiii|12345691|1200
 
 it wworked|1234568|1200
 
-medhat|1234567|100000
+medhat|1234567|10080
 History:medhat|aliii|10.000000|1,17,26,4,2024
 History:medhat|aliii|50.000000|1,17,26,4,2024
 History:medhat|aliii|20.000000|1,20,26,4,2024
 History:medhat|aliii|10.000000|1,45,27,4,2024
 History:medhat|aliii|10.000000|1,49,27,4,2024
 History:medhat|aliii|1000.000000|15,30,28,4,2024
+History:medhat|aliii|20.000000|12,19,29,4,2024
+History:medhat|aliii|20.000000|12,29,29,4,2024
+History:medhat|aliii|200.000000|12,35,29,4,2024
+History:medhat|aliii|20.000000|12,38,29,4,2024
+History:aliii|medhat|200.000000|12,39,29,4,2024
+History:medhat|aliii|20.000000|12,40,29,4,2024
+History:aliii|medhat|20.000000|12,44,29,4,2024
+History:medhat|aliii|20.000000|12,45,29,4,2024
+History:aliii|medhat|20.000000|13,31,29,4,2024
+History:medhat|aliii|100.000000|13,55,29,4,2024
 

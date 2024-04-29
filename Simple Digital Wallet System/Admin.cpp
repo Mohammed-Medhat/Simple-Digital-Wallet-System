@@ -84,7 +84,7 @@ void Admin::edit_password(string name)
 	cin >> new_pass;
 
 	System::allUsers[name].setpassword(new_pass);
-	cout << "the Password has been Changed Sucessfully \n";
+	cout << "the Password has been Changed Successfully \n";
 	return;
 }
 

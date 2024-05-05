@@ -26,18 +26,7 @@ void System::addnewUser(string& username) {
 
 
 }
-void System::addUser(string& username, string& password, double balance) {
-    if (allUsers.find(username) != allUsers.end()) {
-        cout << "User '" << username << "' already exists." << endl;
-    }
-    else {
 
-        User user(username, password, balance);
-        allUsers[username] = user;
-        cout << "User '" << username << "' added successfully." << endl;
-    }
-
-}
 
 void System::removeUser(string& username)
 {
@@ -239,27 +228,77 @@ void System::writeUsersToFile()
     file.close();
 }
 
+void System::editeUser()
+{
+    int choice;
+    bool valid_choice2 = true;
+    while (valid_choice2) {
+        cout << "Please choose:\n";
+        cout << "1 - Edit Username\n";
+        cout << "2 - Edit Password\n3 - Exit\n ";
+        cin >> choice;
 
-void System::Register(string& username, string& password, double balance) {
+
+        switch (choice) {
+        case 1: {
+
+            System::loggedInUser->editUsername();
+            break;
+        }
+        case 2: {
+
+            System::loggedInUser->editPassword();
+            break;
+        }
+        case 3:
+
+            break;
+        default:
+            cout << "Invalid input!" << endl;
+            break;
+        }
+        if (choice == 3)
+            break;
+    }
+}
+
+
+bool System::Register() {
+    string username;
+    
+    
+    
+    cout << "please enter Username :\n";
+    cin >> username;
 
     if (allUsers.find(username) != allUsers.end()) {
-        cout << "User '" << username << "' already exists." << endl;
-        cout << "please enter another username :\n";
-        cin >> username;
-        return Register(username, password, balance);
+        cout << "Username already exist \n";
+        return Register();
     }
     else {
-        User user(username, password, balance);
+        string password;
+        cout << "Enter password :";
+        cin >> password;
+        User user(username, password, 0);
         allUsers[username] = user;
         cout << "User '" << username << "' registered successfully." << endl;
-
-
+        System::loggedInUser = &System::allUsers[username];
+        return true;
     }
 
 }
 
 
-bool System::Login(string username, string password) {
+bool System::Login() {
+    string username;
+    string password;
+    cout << "please enter your name : ";
+    cin >> username;
+    cout << "please enter your password : ";
+    cin >> password;
+
+
+
     auto it = allUsers.find(username);
     string chooice;
     if (it != allUsers.end() && it->second.Password == password) {
@@ -270,15 +309,11 @@ bool System::Login(string username, string password) {
     else {
         cout << "Invalid username or email. Login failed.\npress 0 to exit and others to retry" << endl;
         cin >> chooice;
-        if(chooice[0] == '0')
+        if(chooice == "0"&& chooice.length()==1)
         return false;
         else
         {
-            cout << "please enter your name : ";
-            cin >> username;
-            cout << "please enter your password : ";
-            cin >> password;
-            if(!System::Login(username, password))
+            if(!System::Login())
                 return false;
         }
     }

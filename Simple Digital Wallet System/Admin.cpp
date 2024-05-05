@@ -50,6 +50,7 @@ void Admin::view_Accounts_Data()
 
 void Admin::edit_username(string name)
 {
+	User* f = System::getUser(name);
 	if (!System::search_user(name)) 
 	{
 	cout<<"The Username you Entered Does Not Exist !\n Please Enter the Username of The User To Edit His Username :\t";
@@ -65,7 +66,37 @@ void Admin::edit_username(string name)
 		cout<<"The Username Must be a Unique Name :\n";
 		return edit_username(name);
 	}
-	System::allUsers[name].setUserName(new_name);
+	{
+		for (int i = 0; i < System::allTransactions.size(); i++) {
+			if (System::allTransactions[i].getSender() == name) {
+				System::allTransactions[i].SetSender(new_name);
+			}
+			else if (System::allTransactions[i].getReciever() == name)
+				System::allTransactions[i].reciever = new_name;
+		}
+		for (int i = 0; i < f->History.size(); i++) {
+			if (f->History[i].getSender() == name) {
+				User* R = System::getUser(f->History[i].getReciever());
+				f->History[i].SetSender(new_name);
+				for (int j = 0; j < R->History.size(); j++) {
+					if (R->History[j].getSender() == name)
+						R->History[j].sender = new_name;
+				}
+			}
+			else if (f->History[i].getReciever() == name) {
+				User* R = System::getUser(f->History[i].getSender());
+				f->History[i].reciever = new_name;
+				for (int j = 0; j < R->History.size(); j++) {
+					if (R->History[j].reciever == name)
+						R->History[j].reciever = new_name;
+				}
+
+			}
+		}
+	}
+	System::allUsers[new_name] = System::allUsers[name];
+	System::allUsers.erase(name);
+
 	cout << "the Username has been Changed Sucessfully \n";
 }
 
@@ -89,22 +120,24 @@ void Admin::edit_password(string name)
 void Admin::add_user()
 {
 	string username;
-
-	cout << "Please Enter The Username of The User :\t";
-
+	cout << "Enter username :";
 	cin >> username;
+	if (System::allUsers.find(username) != System::allUsers.end()) {
+		cout << "User '" << username << "' already exists." << endl;
+		return add_user();
+	}
+	else {
+		string password;
+		double balance;
+		cout << "Enter password :";
+		cin >> password;
+		cout << "enter balance :";
+		cin >> balance;
 
-	cout << "Please Enter The password of The User :\t";
-
-	string password;
-
-	cin >> password;
-
-	double balance;
-
-	cout << "Please Enter The balance of The User :\t";
-	cin >> balance;
-	System::Register(username, password, balance);
+		User user(username, password, balance);
+		System::allUsers[username] = user;
+		cout << "User '" << username << "' added successfully." << endl;
+	}
 }
 
 void Admin::delete_user()
@@ -134,11 +167,11 @@ void Admin::suspend_user()
 		cout << "the username does not exist !\n\n ";
 		return suspend_user();
 	}
-	if (System::allUsers[name].susbended) {
+	if (System::allUsers[name].suspended) {
 		cout << "the user is already suspended\n\n";
 	}
 	else {
-		System::allUsers[name].susbended = true;
+		System::allUsers[name].suspended = true;
 		cout << "The User Has Been Suspended Successfully\n";
 	}
 }
@@ -155,8 +188,8 @@ void Admin::reactivated()
 		cout << "the username does not exist !\n\n ";
 		return suspend_user();
 	}
-	if (System::allUsers[name].susbended) {	
-		System::allUsers[name].susbended = false;
+	if (System::allUsers[name].suspended) {	
+		System::allUsers[name].suspended = false;
 		cout << "The User Has Been reactivated Successfully\n";
 	}
 	else

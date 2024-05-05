@@ -1,6 +1,7 @@
 #pragma once
 #include<map>
 #include <fstream>
+#include <iomanip>
 #include <vector>
 #include <iostream>
 #include <queue>
@@ -26,12 +27,11 @@ public:
 public:
 	System();
 	static void addnewUser(string&);
-	static void addUser(string&, string&, double);
 	static void removeUser(string&);
 	static User* getUser(string username);
-	bool Login(string, string);
-	static void Register(string& username, string& password, double balance);
-	void Logout();
+	static bool Login();
+	static bool Register();
+	static void Logout();
 	static void showAllUser();
 	static bool search_user(string);
 	static void readAllTransactions();
@@ -41,6 +41,7 @@ public:
 	static void readUsersFromFile();
 	static User* getUserForTrans(string username);
 	static void writeUsersToFile();
+	static void editeUser();
 	//void saveData();
 	//void deleteData();
 	~System();

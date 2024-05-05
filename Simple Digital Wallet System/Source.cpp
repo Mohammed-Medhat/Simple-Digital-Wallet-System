@@ -5,13 +5,13 @@
 #include"Transaction.h"
 #include"User.h"
 using namespace std;
-System sys;
+
 Admin aali("admin", "admin");
 void home_page();
-void user(User &user) {
+void user() {
 	bool done = true;
 	while (done) {
-		int choice, choice2;
+		int choice;
 		cout << "Welcome!" << endl;
 		cout << "Please Enter :" << endl;
 		cout << "1 - Send Money" << endl;
@@ -26,19 +26,8 @@ void user(User &user) {
 
 		switch (choice) {
 		case 1: {
-			string name;
-			double amount=-1;
-			cout << "Please enter the recipient's username: ";
-			cin >> name;
-			while (amount <=0 ) {
-				cout << "Please enter the amount of money: ";
-				cin >> amount;
-				if (amount<=0)
-				{
-					cout << "amount of money cannot = 0 or negative please try again\n ";
-				}
-			}
-			System::loggedInUser->Send(name, amount);
+			
+			System::loggedInUser->Send();
 			break;
 		}
 		case 2: {
@@ -55,37 +44,7 @@ void user(User &user) {
 			System::loggedInUser->viewPendingRequests();
 			break;
 		case 4: {
-			bool valid_choice2 = true;
-			while (valid_choice2) {
-				cout << "Please choose:\n";
-				cout << "1 - Edit Username\n";
-				cout << "2 - Edit Password\n3 - Exit\n ";
-				cin >> choice2;
-
-
-				switch (choice2) {
-				case 1: {
-
-					System::loggedInUser->editUsername();
-					break;
-				}	
-				case 2: {
-					std::string new_pass;
-					std::cout << "Please enter your new password: ";
-					std::cin >> new_pass;
-					System::loggedInUser->editPassword();
-					break;
-				}
-				case 3:
-
-					break;
-				default:
-					cout << "Invalid input!" << endl;
-					break;
-				}
-				if (choice2 == 3)
-					break;
-			}
+			System::editeUser();
 			break;
 		}
 		case 5:
@@ -95,7 +54,8 @@ void user(User &user) {
 			System::loggedInUser->ViewHistory();
 			break;
 		case 7:
-			home_page(); // Assuming home_page() is a function to handle logout
+			System::Logout();
+			return home_page();
 			break;
 		case 8:
 			return;
@@ -121,9 +81,8 @@ void admin(Admin &ali)
 	cout << "5: to  Suspend an account" << endl;
 	cout << "6: to  Reactivate an account" << endl;
 	cout << "7: to  View all transactions" << endl;
-	cout << "8: to  Edit admin account" << endl;
-	cout << "9: to Logout" << endl;
-	cout << "10: to Exit" << endl;
+	cout << "8: to Logout" << endl;
+	cout << "9: to Exit" << endl;
 
 	bool valid_choice = true;
 	while (valid_choice) {
@@ -133,7 +92,7 @@ void admin(Admin &ali)
 		case 1:
 		{
 			ali.view_Accounts_Data();
-			admin(aali);
+			return admin(aali);
 			break;
 		}
 		case 2:
@@ -218,71 +177,17 @@ void admin(Admin &ali)
 			ali.view_all_transactions();
 			return admin(aali);
 		}
+		
 		case 8:
 		{
-			int choice2;
-			cout << "1. Edit Admin username" << endl;
-			cout << "2. Edit Admin password" << endl;
-			cout << "3. Exit" << endl;
-
-			cin >> choice2;
-
-			switch (choice2)
-			{
-			case 1:
-			{
-				cout << "Please Enter The new Username of Admin :\t";
-				string name;
-				cin >> name;
-				ali.set_username(name);
-				cout << "the Username has Changed Sucssesfully \n";
-				return admin(aali);
-
-				break;
-			}
-			case 2:
-			{
-				cout << "Please Enter The new password of Admin :\t";
-				string pass;
-				cin >> pass;
-				ali.set_password(pass);
-				cout << "the password has Changed Sucssesfully \n";
-				return admin(aali);
-
-
-				break;
-			}
-			case 3:
-			{
-				valid_choice = false; // Exit inner loop
-				cout << "Exiting edit account menu..." << endl;
-				return admin(aali);
-				break;
-			}
-			default:
-			{
-				cout << "Invalid choice. Please try again." << endl;
-				return admin(aali);
-				break;
-			}
-			break;
-			}
-
-			return admin(aali);
+			valid_choice = false; // Exit outer loop
+			cout << "Admin logged out successfully ! " << endl;
+			return home_page();
 			break;
 		}
 		case 9:
 		{
-			valid_choice = false; // Exit outer loop
-			cout << "Admin loged out sucssesfully ! " << endl;
-			return home_page();
-			break;
-		}
-		case 10:
-		{
-			valid_choice = false; // Exit outer loop
-			cout << "Exiting admin menu..." << endl;
-			return home_page();
+			return;
 			break;
 		}
 		default:
@@ -298,28 +203,32 @@ void admin(Admin &ali)
 
 void home_page() {
 
-	int choice;
-	cout << "Welcome!" << endl;
-	cout << "Please Enter : " << endl;
-	cout << "1-to Log-in as User" << endl;
-	cout << "2-to Log-in as Admin" << endl;
-	cout << "3-for Registering" << endl;
-	cout << "4-to Exit" << endl;
-
-	cin >> choice;
-	string name, password;
+	string strchoice;
+	while (strchoice != "1" && strchoice != "2" && strchoice != "3" && strchoice != "4"||strchoice.length()!=1) {
+		
+		cout << "Welcome!" << endl;
+		cout << "Please Enter : " << endl;
+		cout << "1-to Log-in as User" << endl;
+		cout << "2-to Log-in as Admin" << endl;
+		cout << "3-for Registering" << endl;
+		cout << "4-to Exit" << endl;
+		cin >> strchoice;
+		if (strchoice != "1" && strchoice != "2" && strchoice != "3" && strchoice != "4" || strchoice.length() == 0)
+			cout<< "invalid choice \n";
+		
+	}
+	int choice = stoi(strchoice);
+	
 	switch (choice) {
 	case 1:
 	{
-		cout << "please enter your name : ";
-		cin >> name;
-		cout << "please enter your password : ";
-		cin >> password;
-		if(sys.Login(name, password))
-		user(sys.allUsers[name]);
+		
+		if (System::Login())
+			user();
 		break;
 	}
 	case 2: {
+		string name, password;
 		cout << "please enter your name : ";
 		cin >> name;
 		cout << "please enter your password : ";
@@ -331,19 +240,16 @@ void home_page() {
 		}
 		else
 		{
-			cout << "invalid username or password please try again !\n\n";
-			home_page();
+			cout << "invalid username or password please try again !\n";
+			return home_page();
 		}
 		break;
 	}
 	case 3: {
 
-		cout << "please enter your name : ";
-		cin >> name;
-		cout << "please enter your password : ";
-		cin >> password;
-		cout << "please enter your balance : ";
-		//sys.Register(name, password, balance);
+		if (System::Register())
+			user();
+
 		break;
 	}
 	case 4:

@@ -5,6 +5,7 @@
 #include <queue>
 #include <stack>
 #include <string>
+#include<iomanip>
 #include <stdexcept>
 #include <sstream>
 #define _CRT_SECURE_NO_WARNINGS

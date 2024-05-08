@@ -39,9 +39,14 @@ public:
 	static void writePendingRequests();
 	static void readPendingRequests();
 	static void readUsersFromFile();
+
+	string md5(const string& input);
+	string SecureString();
+
 	static User* getUserForTrans(string username);
 	static void writeUsersToFile();
 	//void saveData();
 	//void deleteData();
 	~System();
 };
+

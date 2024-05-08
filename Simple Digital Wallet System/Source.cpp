@@ -95,10 +95,10 @@ void user(User &user) {
 			System::loggedInUser->ViewHistory();
 			break;
 		case 7:
-			home_page(); // Assuming home_page() is a function to handle logout
+			return home_page(); // Assuming home_page() is a function to handle logout
 			break;
 		case 8:
-			return;
+			return ;
 			break;
 		
 		default:
@@ -133,7 +133,7 @@ void admin(Admin &ali)
 		case 1:
 		{
 			ali.view_Accounts_Data();
-			admin(aali);
+			return admin(aali);
 			break;
 		}
 		case 2:
@@ -320,7 +320,7 @@ void home_page() {
 		break;
 	}
 	case 2: {
-		cout << "please enter your name : ";
+		cout << "please enter your Username : ";
 		cin >> name;
 		cout << "please enter your password : ";
 		cin >> password;

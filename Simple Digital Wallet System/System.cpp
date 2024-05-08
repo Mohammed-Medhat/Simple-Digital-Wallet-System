@@ -2,8 +2,12 @@
 #include<assert.h>
 #include <cassert>
 #include"System.h"
+#include <cryptopp/cryptlib.h>
+#include <cryptopp/md5.h>
+#include <cryptopp/hex.h>
 
 using namespace std;
+using namespace CryptoPP;
 map<string, User> System::allUsers;
 vector<Transaction> System::allTransactions;
 User* System::loggedInUser;
@@ -66,7 +70,7 @@ User* System::getUserForTrans(string username) {
         return &(it->second);
     }
     else {
-  
+
         return nullptr;
     }
 }
@@ -80,7 +84,7 @@ void System::showAllUser() {
 bool System::search_user(string username)
 {
     map<string, User>::iterator it;
-     it = allUsers.find(username);
+    it = allUsers.find(username);
     if (it != allUsers.end()) {
         return true;
     }
@@ -91,7 +95,7 @@ bool System::search_user(string username)
 
 void System::readAllTransactions()
 {
-    string filename ="Transactions.txt" ;
+    string filename = "Transactions.txt";
     // Open the file for reading
     ifstream inFile(filename);
     if (!inFile.is_open()) {
@@ -209,14 +213,47 @@ void System::readUsersFromFile()
         try {
             User user = User::deserializeFromString(line);
             allUsers[user.getUserName()] = user;
-           // cout << "Read user: " << user.getUserName() << endl;
+            // cout << "Read user: " << user.getUserName() << endl;
         }
         catch (const exception& e) {
-           // cerr << "Error reading user from file: " << e.what() << endl;
+            // cerr << "Error reading user from file: " << e.what() << endl;
         }
     }
 
     file.close();
+}
+
+string System::md5(const string& input)
+{
+    Weak::MD5 hash;
+    string digest;
+
+    StringSource(input, true, new HashFilter(hash, new HexEncoder(new StringSink(digest))));
+
+    return digest;
+}
+
+string System::SecureString()
+{
+
+    string password;
+    char ch;
+    while (true) {
+        ch = _getch();
+        if (ch == '\r' || ch == '\n') {
+            cout << endl;
+            break;
+        }
+        if (ch == '\b' && !password.empty()) {
+            password.pop_back();
+            cout << "\b \b";
+        }
+        else if (ch != '\b') {
+            password += ch;
+            cout << '*';
+        }
+    }
+    return password;
 }
 
 void System::writeUsersToFile()
@@ -249,7 +286,8 @@ void System::Register(string& username, string& password, double balance) {
         return Register(username, password, balance);
     }
     else {
-        User user(username, password, balance);
+
+        User user(username, md5(password), balance);
         allUsers[username] = user;
         cout << "User '" << username << "' registered successfully." << endl;
 
@@ -258,11 +296,10 @@ void System::Register(string& username, string& password, double balance) {
 
 }
 
-
 bool System::Login(string username, string password) {
     auto it = allUsers.find(username);
     string chooice;
-    if (it != allUsers.end() && it->second.Password == password) {
+    if (it != allUsers.end() && it->second.Password == md5(password)) {
         loggedInUser = &(it->second);
         cout << "User '" << username << "' logged in successfully." << endl;
         return true;
@@ -270,15 +307,15 @@ bool System::Login(string username, string password) {
     else {
         cout << "Invalid username or email. Login failed.\npress 0 to exit and others to retry" << endl;
         cin >> chooice;
-        if(chooice[0] == '0')
-        return false;
+        if (chooice[0] == '0')
+            return false;
         else
         {
             cout << "please enter your name : ";
             cin >> username;
             cout << "please enter your password : ";
             cin >> password;
-            if(!System::Login(username, password))
+            if (!System::Login(username, password))
                 return false;
         }
     }
@@ -289,6 +326,7 @@ void System::Logout() {
     cout << "User logged out successfully." << endl;
 
 }
+
 System::~System(void) {
 
 }

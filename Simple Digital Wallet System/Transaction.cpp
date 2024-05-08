@@ -98,7 +98,14 @@ string Transaction::serializeToString () const
 	if (sender.empty() && reciever.empty() && amount == 0.0 && Date.hour == 0 && Date.min == 0 && Date.day == 0 && Date.month == 0 && Date.year == 0) {
 		return ""; // Return empty string for empty transaction
 	}
-	return sender + "|" + reciever + "|" + to_string(amount) + "|" + Date.serializeToString();
+	ostringstream oss;
+	oss << sender << "|" << reciever << "|";
+
+	// Set formatting options to prevent scientific notation for amount
+	oss << std::fixed << std::setprecision(3) << amount << "|";
+
+	oss << Date.serializeToString();
+	return oss.str();
 }
 
 Transaction Transaction::deserializeFromString(string& str)

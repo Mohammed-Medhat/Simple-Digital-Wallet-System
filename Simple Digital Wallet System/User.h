@@ -17,7 +17,7 @@ class User
 {
 public:
 	string UserName, Password;
-	bool susbended;
+	bool suspended;
 	double balance;
 	Transaction transactions;
 	vector <Transaction> History;
@@ -26,15 +26,17 @@ public:
 public:
 
 	User();
+	User(string UserName, string Password, double balance, bool sus);
 	User(string UserName, string Password, double balance);
 	void setUserName(string UserName);
 	string getUserName();
+	bool getSuspended();
 	void setpassword(string pass);
 	void setbalance(double bal);
 	string getpassword();
 	double ViewCurrentBalance();
 	void userData();
-	void Send(string& reciever, double& amount);
+	void Send();
 	void RequestMoney(string& sender, double amount);
 	void acceptRequest(Transaction transaction);
 	void addTransactionToHistory( Transaction transaction);

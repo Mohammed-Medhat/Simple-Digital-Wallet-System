@@ -3,7 +3,15 @@
 
 User::User()
 {
-	susbended = false;
+	suspended = false;
+}
+
+User::User(string UserName, string Password, double balance, bool sus)
+{
+	this->UserName = UserName;
+	this->Password = Password;
+	this->balance = balance;
+	this->suspended = sus;
 }
 
 User::User(string UserName, string Password, double balance)
@@ -23,14 +31,14 @@ void User::editUsername()
 {
 	
 	string new_name;
-	cout << "Please Enter The New Username :\t";
+	cout << "Please Enter The New Username :";
 	cin >> new_name;
 
 	if (System::search_user(new_name))
 	{
 		cout << "The Username already exist :\n";
-		editUsername();
-		return;
+		return editUsername();
+		
 	}
 	string oldName = UserName;
 	//handling transaction history after edit name 
@@ -39,8 +47,8 @@ void User::editUsername()
 			if (System::allTransactions[i].getSender() == oldName) {
 				System::allTransactions[i].SetSender(new_name);
 			}
-			else if (History[i].getReciever() == oldName)
-				System::allTransactions[i].getReciever() = new_name;
+			else if (System::allTransactions[i].getReciever() == oldName)
+				System::allTransactions[i].reciever = new_name;
 		}
 		for (int i = 0; i < History.size(); i++) {
 			if (History[i].getSender() == oldName) {
@@ -84,7 +92,8 @@ void User::editUsername()
 		}*/
 	
 	}
-	System::allUsers[System::loggedInUser->getUserName()].setUserName(new_name);
+	System::allUsers[new_name] = System::allUsers[oldName];
+	System::allUsers.erase(oldName);
 	cout << "the Username has been Changed Successfully \n";
 	return;
 }
@@ -92,17 +101,17 @@ void User::editUsername()
 void User::editPassword()
 {
 	string new_pass;
-	cout << "Please Enter The New Password :\t";
+	cout << "Please Enter The New Password :";
 	cin >> new_pass;
 
-	System::allUsers[System::loggedInUser->getUserName()].setpassword(new_pass);
+	System::loggedInUser->setpassword(new_pass);
 	cout << "the Password has been Changed Successfully \n";
-	return;
 }
 
 double User::ViewCurrentBalance()
 {
-	return balance;
+	
+	return  balance;
 }
 
 void User::setUserName(string UserName)
@@ -113,6 +122,11 @@ void User::setUserName(string UserName)
 string User::getUserName()
 {
 	return UserName;
+}
+
+bool User::getSuspended()
+{
+	return suspended;
 }
 
 void User::setpassword(string pass)
@@ -133,75 +147,105 @@ string User::getpassword()
 void User::userData()
 {
 	cout << "User Name: " << getUserName()<<"\t";
-	cout << "Balance: " << ViewCurrentBalance()<<endl;
-	ViewHistory();
+	cout << "Balance: "  <<ViewCurrentBalance()<<endl;
+	//ViewHistory();
 }
 
-void User::Send(string& reciever, double& amount)
+void User::Send()
 {
+	string reciever;
+	double amount = -1;
+	cout << "Please enter the recipient's username: ";
+	cin >> reciever;
+	while (amount <= 0) {
+		cout << "Please enter the amount of money: ";
+		cin >> amount;
+		if (amount <= 0)
+		{
+			cout << "amount of money cannot = 0 or negative please try again\n ";
+		}
+	}
 
-	bool T;
+	string T;
 	
 	map<string, User>::iterator FindingUser;
 	FindingUser = System::allUsers.find(reciever);
 
 	if (FindingUser == System::allUsers.end()) {
-		cout << "The User is not found" << endl << "Do you want to continue? press 1 / 0 to exit";
-		cin >> T;
-		if (T == 1)
-		{
-			cin >> reciever;
-			cin >> amount;
-			Send(reciever, amount);
-		}
-		else
-		{
-			exit; //redirect to home page 
+	
+			cout << "The User is not found" << endl;
+			while (T != "1" && T != "0" || T.length() != 1) {
+			cout<< "Do you want to continue? press 1 / 0 to exit";
+			cin >> T;
+			if (T == "1" && T.length() == 1)
+			{
+
+				Send();
+			}
+			else if (T == "0" && T.length() != 1)
+			{
+				exit; //redirect to home page 
+			}
+			else cout<<"Invalid choice \n";
 		}
 	}
 
 
 	else if (checkSuspendedAccounts(reciever))
 	{
-		cout << "This account was inactive" << endl << "Do you want to continue? press 1 / 0 to exit";
-		cin >> T;
-		if (T == 1) {
-			cin >> reciever;
-			cin >> amount;
-			Send(reciever, amount);
+		cout << "This account is inactive" << endl;
+		while (T != "1" && T != "0" || T.length() != 1) {
+			cout << "Do you want to continue? press 1 / 0 to exit";
+			cin >> T;
+			if (T == "1") {
+
+				Send();
+			}
+			else if(T=="0")
+			{
+				exit; //redirect to home page
+			}else cout << "Invalid choice \n";
 		}
-		else
-		{
-			exit; //redirect to home page
-		}
+	}
+	else if(getSuspended())
+	{
+		cout << "Your account account is inactive\n"
+		  "cannot perform any Transaction until reactivated" << endl;
+		
+		exit;
+		
 	}
 	else if (!CheckBalance(amount))
 	{
-		cout << "Your balance is not enough" << endl << "Do you want to continue? press 1 / 0 to exit";
-		cin >> T;
-		if (T == 1) {
-			cin >> reciever;
-			cin >> amount;
-			Send(reciever, amount);
-		}
-		else
-		{
-			exit; //redirect to home page
+		cout << "Your balance is not enough" << endl;
+		while (T != "1" && T != "0" || T.length() != 1) {
+			cout << "Do you want to continue? press 1 / 0 to exit";
+			cin >> T;
+			if (T == "1") {
+
+				Send();
+			}
+			else if (T == "0")
+			{
+				exit; //redirect to home page
+			} else cout << "Invalid choice \n";
 		}
 	}
 	else if(UserName==FindingUser->second.getUserName())
 	{
 		cout << "You can not send money to yourself\n";
-		cout << "Do you want to continue? press 1 / 0 to exit";
-		cin >> T;
-		if (T == 1) {
-			cin >> reciever;
-			cin >> amount;
-			Send(reciever, amount);
-		}
-		else
-		{
-			exit; //redirect to home page
+		while (T != "1" && T != "0" || T.length() != 1) {
+			cout << "Do you want to continue? press 1 / 0 to exit";
+			cin >> T;
+			if (T == "1") {
+
+				Send();
+			}
+			else if (T == "0")
+			{
+				exit; //redirect to home page
+			}
+			else cout << "Invalid choice \n";
 		}
 	}
 
@@ -221,7 +265,8 @@ void User::Send(string& reciever, double& amount)
 
 bool User::checkSuspendedAccounts(string Reciever)
 {
-		return susbended;	
+	return  System::getUser(Reciever)->getSuspended();
+			
 }
 
 
@@ -256,7 +301,7 @@ bool User::CheckBalance(double amount)
 void User::CheckOut(string reciever)
 {
 	DATE TransactionDate = transactions.getCurrentDateTime();
-	bool T;
+	string T;
 	
 
 
@@ -265,40 +310,43 @@ void User::CheckOut(string reciever)
 	cout << "Paid Amount: " << transactions.getAmount()<<endl;
 	cout << "Time: " << TransactionDate.hour << ":" << TransactionDate.min << endl;
 	cout << "Date: " << TransactionDate.month << "/" << TransactionDate.day << "/" << TransactionDate.year << endl;
-	cout << "confirm transaction" << endl << "press 1 to confirm / 0 to delete transaction\n";
-
-	cin >> T;
 	
-	if (T == 1)
-	{
-		
-		
-		User *Reciever = System::getUser(reciever);
-		
 
-		double SenderNewBalance = ViewCurrentBalance() - transactions.getAmount();
-		
-		double RecieverNewBalance = Reciever->ViewCurrentBalance() + transactions.getAmount();
-		
-		BalanceAfterTransaction(SenderNewBalance);
-		
-		
-		Reciever->BalanceAfterTransaction(RecieverNewBalance);
-		
-		History.push_back(transactions);
-		
-		Reciever->History.push_back(transactions);
-		System::allTransactions.push_back(transactions);
-		
+	while (T != "1" && T != "0" || T.length() != 1) {
+		cout << "confirm transaction" << endl << "press 1 to confirm / 0 to delete transaction\n";
+		cin >> T;
+
+		if (T == "1")
+		{
+
+
+			User* Reciever = System::getUser(reciever);
+
+
+			double SenderNewBalance = ViewCurrentBalance() - transactions.getAmount();
+
+			double RecieverNewBalance = Reciever->ViewCurrentBalance() + transactions.getAmount();
+
+			BalanceAfterTransaction(SenderNewBalance);
+
+
+			Reciever->BalanceAfterTransaction(RecieverNewBalance);
+
+			History.push_back(transactions);
+
+			Reciever->History.push_back(transactions);
+			System::allTransactions.push_back(transactions);
+
+
+		}
+
+		else if (T == "0")
+		{
+			exit; //redirect to home page
+		}
+		else cout << "invalid choice\n";
 
 	}
-
-	else
-	{
-		exit; //redirect to home page
-	}
-
-
 }
 
 
@@ -421,7 +469,10 @@ void User::addPendingRequest( Transaction transaction)
 string User::serializeToString() const
 {
 	ostringstream oss;
-	oss << UserName << "|" << Password << "|" << balance << "\n";
+	oss << UserName << "|" << Password << "|";
+	oss << std::fixed << std::setprecision(3) << balance << "|";
+
+	oss << suspended << "\n";
 
 	for (const auto& transaction : History) {
 		oss << "History:" << transaction.serializeToString() << "\n";
@@ -449,11 +500,18 @@ User User::deserializeFromString(const string& str)
 	getline(iss, token, '|');
 	string password = token;
 
+	bool sus = false;
+
 	// Read balance
 	getline(iss, token, '|');
 	double balance = stod(token);
 
-	User user(userName, password, balance);
+	getline(iss, token, '|');
+	if (token == "true" || token == "1" || token == "TRUE") {
+		sus = true;
+	}
+
+	User user(userName, password, balance, sus);
 
 	// Read remaining lines for History and PendingRequest
 	while (getline(iss, token)) {

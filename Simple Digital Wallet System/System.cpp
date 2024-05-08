@@ -1,13 +1,10 @@
 #pragma once
-#include<assert.h>
-#include <cassert>
 #include"System.h"
-#include <cryptopp/cryptlib.h>
-#include <cryptopp/md5.h>
-#include <cryptopp/hex.h>
+
 
 using namespace std;
 using namespace CryptoPP;
+
 map<string, User> System::allUsers;
 vector<Transaction> System::allTransactions;
 User* System::loggedInUser;
@@ -212,39 +209,6 @@ void System::readUsersFromFile()
     file.close();
 }
 
-string System::md5(const string& input)
-{
-    Weak::MD5 hash;
-    string digest;
-
-    StringSource(input, true, new HashFilter(hash, new HexEncoder(new StringSink(digest))));
-
-    return digest;
-}
-
-string System::SecureString()
-{
-
-    string password;
-    char ch;
-    while (true) {
-        ch = _getch();
-        if (ch == '\r' || ch == '\n') {
-            cout << endl;
-            break;
-        }
-        if (ch == '\b' && !password.empty()) {
-            password.pop_back();
-            cout << "\b \b";
-        }
-        else if (ch != '\b') {
-            password += ch;
-            cout << '*';
-        }
-    }
-    return password;
-}
-
 void System::writeUsersToFile()
 {
     string filename = "Users.txt";
@@ -300,27 +264,63 @@ void System::editeUser()
 }
 
 
-bool System::Register() {
-    string username;
+bool System::Register(string username,string password) {
     
-    
-    
-    cout << "please enter Username :\n";
-    cin >> username;
 
-    if (allUsers.find(username) != allUsers.end()) {
-        cout << "Username already exist \n";
-        return Register();
-    }
-    else {
 
-        User user(username, md5(password), balance);
+
+   
+    
+     
+      
+    //   password= SecureString();
+        
+        User user(username, sha256(password), 0);
         allUsers[username] = user;
         cout << "User '" << username << "' registered successfully." << endl;
         System::loggedInUser = &System::allUsers[username];
         return true;
-    }
+    
 
+}
+
+
+ 
+
+
+string System::sha256(string & input) {
+    SHA256 hash;
+    string output;
+
+    StringSource(input, true,
+        new HashFilter(hash,
+            new HexEncoder(
+                new StringSink(output)
+            )
+        )
+    );
+
+    return output;
+}
+string System::SecureString() {
+    string password;
+    char ch;
+    while (true) {
+        ch = _getch();
+        if (ch == '\r' || ch == '\n') {
+            cout << endl;
+            break;
+        }
+        if (ch == '\b' && !password.empty()) {
+            password.pop_back();
+            cout << "\b \b";
+        }
+        else if (ch != '\b') {
+            password += ch;
+            cout << '*';
+        }
+    }
+    return password;
 }
 
 
@@ -330,13 +330,12 @@ bool System::Login() {
     cout << "please enter your name : ";
     cin >> username;
     cout << "please enter your password : ";
-    cin >> password;
+ //  password= SecureString();
 
 
-bool System::Login(string username, string password) {
     auto it = allUsers.find(username);
     string chooice;
-    if (it != allUsers.end() && it->second.Password == md5(password)) {
+    if (it != allUsers.end() && it->second.Password == sha256(password)) {
         loggedInUser = &(it->second);
         cout << "User '" << username << "' logged in successfully." << endl;
         return true;
@@ -344,11 +343,11 @@ bool System::Login(string username, string password) {
     else {
         cout << "Invalid username or email. Login failed.\npress 0 to exit and others to retry" << endl;
         cin >> chooice;
-        if (chooice[0] == '0')
+        if (chooice == "0" && chooice.length() == 1)
             return false;
         else
         {
-            if(!System::Login())
+            if (!System::Login())
                 return false;
         }
     }
@@ -359,7 +358,6 @@ void System::Logout() {
     cout << "User logged out successfully." << endl;
 
 }
-
 System::~System(void) {
 
 }

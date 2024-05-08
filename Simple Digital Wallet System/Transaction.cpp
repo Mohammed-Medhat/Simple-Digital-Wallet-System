@@ -3,21 +3,21 @@
 
 Transaction::Transaction()
 {
-	
+
 	this->sender = "invalid";
 	this->reciever = "invalid";
 	this->amount = 0;
-	
+
 
 
 }
 
-Transaction::Transaction(string sender, string reciever, double amount, DATE Date)
+Transaction::Transaction(string sender, string reciever, double amount)
 {
 	this->sender = sender;
 	this->reciever = reciever;
 	this->amount = amount;
-	this->Date = Date;
+	this->Date = getCurrentDateTime();
 
 }
 
@@ -45,26 +45,26 @@ void Transaction::SetSender(string sender)
 
 
 
- string Transaction::getSender()
+string Transaction::getSender()
 {
 	return sender;
 }
 
- string Transaction::getReciever()
- {
-	 return reciever;
- }
+string Transaction::getReciever()
+{
+	return reciever;
+}
 
 
 
 void Transaction::DisplayTransactionData()
 {
-	
+
 	cout << "sender: " << sender << endl;
-	cout << "Receiver: " <<  reciever << endl;
+	cout << "Receiver: " << reciever << endl;
 	cout << "Paid Money : " << amount << endl;
 	cout << "Time: " << Date.hour << ":" << Date.min << endl;
-	cout << "Date: " << Date.month << "/" << Date.day << "/" << Date.year << endl<<"------------------------------\n";
+	cout << "Date: " << Date.month << "/" << Date.day << "/" << Date.year << endl << "------------------------------\n";
 }
 
 
@@ -93,7 +93,7 @@ DATE Transaction::getCurrentDateTime() {
 	return currentDateTime;
 }
 
-string Transaction::serializeToString () const
+string Transaction::serializeToString() const
 {
 	if (sender.empty() && reciever.empty() && amount == 0.0 && Date.hour == 0 && Date.min == 0 && Date.day == 0 && Date.month == 0 && Date.year == 0) {
 		return ""; // Return empty string for empty transaction
@@ -131,7 +131,7 @@ Transaction Transaction::deserializeFromString(string& str)
 		string dateStr = str.substr(pos3 + 1);
 		DATE dt = DATE::deserializeFromString(dateStr);
 
-		return Transaction(sndr, rcvr, amt, dt);
+		return Transaction(sndr, rcvr, amt);
 	}
 	catch (const exception& e) {
 		throw runtime_error("Error deserializing Transaction: " + string(e.what()));

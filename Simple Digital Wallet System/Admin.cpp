@@ -51,19 +51,19 @@ void Admin::view_Accounts_Data()
 void Admin::edit_username(string name)
 {
 	User* f = System::getUser(name);
-	if (!System::search_user(name)) 
+	if (!System::search_user(name))
 	{
-	cout<<"The Username you Entered Does Not Exist !\n Please Enter the Username of The User To Edit His Username :\t";
-	cin>>name;
-	return edit_username(name);
+		cout << "The Username you Entered Does Not Exist !\n Please Enter the Username of The User To Edit His Username :\t";
+		cin >> name;
+		return edit_username(name);
 	}
 	string new_name;
-	cout<<"Please Enter The New Username :\t";
-	cin>>new_name;
+	cout << "Please Enter The New Username :\t";
+	cin >> new_name;
 
 	if (System::search_user(new_name))
 	{
-		cout<<"The Username Must be a Unique Name :\n";
+		cout << "The Username Must be a Unique Name :\n";
 		return edit_username(name);
 	}
 	{
@@ -147,7 +147,7 @@ void Admin::delete_user()
 	cout << "Please Enter The Username of the User You Want to Delete :\t";
 
 	cin >> name;
-	if (!System::search_user(name) )
+	if (!System::search_user(name))
 	{
 		cout << "the username does not exist please try again \n\n";
 		return delete_user();
@@ -162,7 +162,7 @@ void Admin::suspend_user()
 
 	cout << "Please Enter The Username of the User You Want to Suspend :\t";
 	cin >> name;
-	if(!System::search_user(name))
+	if (!System::search_user(name))
 	{
 		cout << "the username does not exist !\n\n ";
 		return suspend_user();
@@ -188,7 +188,7 @@ void Admin::reactivated()
 		cout << "the username does not exist !\n\n ";
 		return suspend_user();
 	}
-	if (System::allUsers[name].suspended) {	
+	if (System::allUsers[name].suspended) {
 		System::allUsers[name].suspended = false;
 		cout << "The User Has Been reactivated Successfully\n";
 	}
@@ -203,7 +203,7 @@ void Admin::view_all_transactions()
 	it = System::allTransactions.begin();
 
 
-	for(Transaction t : System::allTransactions)
+	for (Transaction t : System::allTransactions)
 	{
 		t.DisplayTransactionData();
 	}
@@ -212,7 +212,7 @@ void Admin::view_all_transactions()
 
 void Admin::edit_balance(string name)
 {
-	
+
 	if (!System::search_user(name))
 	{
 		cout << "The Username you Entered Does Not Exist !\n";
@@ -223,7 +223,7 @@ void Admin::edit_balance(string name)
 	cout << "Please Enter The Nem Balance :\t";
 	cin >> new_balance;
 
-	if(new_balance<0)
+	if (new_balance < 0)
 	{
 		cout << "the balance must be a valid number !\n";
 		return edit_balance(name);

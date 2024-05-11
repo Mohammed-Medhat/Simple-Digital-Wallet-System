@@ -10,8 +10,8 @@
 #include <string>
 #include<algorithm>
 #include <sstream>
-
-
+#include <deque>
+#include <list>
 using namespace std;
 class User
 {
@@ -21,7 +21,7 @@ public:
 	double balance;
 	Transaction transactions;
 	vector <Transaction> History;
-	queue<Transaction> pendingRequests;
+	list<Transaction> pendingRequests;
 
 public:
 
@@ -39,13 +39,13 @@ public:
 	void Send();
 	void RequestMoney(string& sender, double amount);
 	void acceptRequest(Transaction transaction);
-	void addTransactionToHistory( Transaction transaction);
+	void addTransactionToHistory(Transaction transaction);
 
-	void addPendingRequest( Transaction transaction);
+	void addPendingRequest(Transaction transaction);
 
 
 	string serializeToString() const;
-    static User deserializeFromString(const string& str); 
+	static User deserializeFromString(const string& str);
 	bool checkSuspendedAccounts(string Reciever);
 	bool CheckBalance(double amount);
 	void CheckOut(string reeciever);

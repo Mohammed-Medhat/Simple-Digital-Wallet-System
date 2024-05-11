@@ -12,10 +12,10 @@ private:
 	string username;
 	string password;
 public:
-	
+
 	Admin();
 	Admin(string, string);
-	
+
 
 	void set_username(string new_name);
 	string get_username();
@@ -34,7 +34,7 @@ public:
 	void reactivated();
 
 	void view_all_transactions();
-	
+
 	void edit_balance(string name);
 	~Admin();
 };

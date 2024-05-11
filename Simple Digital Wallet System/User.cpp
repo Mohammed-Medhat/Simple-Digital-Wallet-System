@@ -29,7 +29,7 @@ void User::BalanceAfterTransaction(double newBalance)
 
 void User::editUsername()
 {
-	
+
 	string new_name;
 	cout << "Please Enter The New Username :";
 	cin >> new_name;
@@ -38,7 +38,7 @@ void User::editUsername()
 	{
 		cout << "The Username already exist :\n";
 		return editUsername();
-		
+
 	}
 	string oldName = UserName;
 	//handling transaction history after edit name 
@@ -76,7 +76,7 @@ void User::editUsername()
 			if (System::allPendingRequests[i].getSender() == oldName) {
 				System::allPendingRequests[i].SetSender(new_name);
 			}
-			
+
 		}
 		queue<Transaction>temp;
 		while (!pendingRequests.empty()) {
@@ -88,9 +88,9 @@ void User::editUsername()
 		{
 			pendingRequests.push(temp.front());
 			temp.pop();
-			
+
 		}*/
-	
+
 	}
 	System::allUsers[new_name] = System::allUsers[oldName];
 	System::allUsers.erase(oldName);
@@ -110,7 +110,7 @@ void User::editPassword()
 
 double User::ViewCurrentBalance()
 {
-	
+
 	return  balance;
 }
 
@@ -146,8 +146,8 @@ string User::getpassword()
 
 void User::userData()
 {
-	cout << "User Name: " << getUserName()<<"\t";
-	cout << "Balance: "  <<ViewCurrentBalance()<<endl;
+	cout << "User Name: " << getUserName() << "\t";
+	cout << "Balance: " << ViewCurrentBalance() << endl;
 	//ViewHistory();
 }
 
@@ -167,15 +167,15 @@ void User::Send()
 	}
 
 	string T;
-	
+
 	map<string, User>::iterator FindingUser;
 	FindingUser = System::allUsers.find(reciever);
 
 	if (FindingUser == System::allUsers.end()) {
-	
-			cout << "The User is not found" << endl;
-			while (T != "1" && T != "0" || T.length() != 1) {
-			cout<< "Do you want to continue? press 1 / 0 to exit";
+
+		cout << "The User is not found" << endl;
+		while (T != "1" && T != "0" || T.length() != 1) {
+			cout << "Do you want to continue? press 1 / 0 to exit";
 			cin >> T;
 			if (T == "1" && T.length() == 1)
 			{
@@ -186,7 +186,7 @@ void User::Send()
 			{
 				exit; //redirect to home page 
 			}
-			else cout<<"Invalid choice \n";
+			else cout << "Invalid choice \n";
 		}
 	}
 
@@ -201,19 +201,20 @@ void User::Send()
 
 				Send();
 			}
-			else if(T=="0")
+			else if (T == "0")
 			{
 				exit; //redirect to home page
-			}else cout << "Invalid choice \n";
+			}
+			else cout << "Invalid choice \n";
 		}
 	}
-	else if(getSuspended())
+	else if (getSuspended())
 	{
 		cout << "Your account account is inactive\n"
-		  "cannot perform any Transaction until reactivated" << endl;
-		
+			"cannot perform any Transaction until reactivated" << endl;
+
 		exit;
-		
+
 	}
 	else if (!CheckBalance(amount))
 	{
@@ -228,10 +229,11 @@ void User::Send()
 			else if (T == "0")
 			{
 				exit; //redirect to home page
-			} else cout << "Invalid choice \n";
+			}
+			else cout << "Invalid choice \n";
 		}
 	}
-	else if(UserName==FindingUser->second.getUserName())
+	else if (UserName == FindingUser->second.getUserName())
 	{
 		cout << "You can not send money to yourself\n";
 		while (T != "1" && T != "0" || T.length() != 1) {
@@ -255,7 +257,7 @@ void User::Send()
 		transactions.amount = amount;
 		transactions.sender = System::loggedInUser->getUserName();
 		transactions.reciever = reciever;
-		transactions.Date= Transaction::getCurrentDateTime();
+		transactions.Date = Transaction::getCurrentDateTime();
 		CheckOut(reciever);
 	}
 
@@ -266,7 +268,7 @@ void User::Send()
 bool User::checkSuspendedAccounts(string Reciever)
 {
 	return  System::getUser(Reciever)->getSuspended();
-			
+
 }
 
 
@@ -279,7 +281,7 @@ void User::ViewHistory()
 	else {
 		cout << "Your Transaction History: " << endl << "**************\n";
 
-		for  (Transaction t : History) {
+		for (Transaction t : History) {
 			t.DisplayTransactionData();
 		}
 	}
@@ -302,15 +304,15 @@ void User::CheckOut(string reciever)
 {
 	DATE TransactionDate = transactions.getCurrentDateTime();
 	string T;
-	
 
 
 
-	cout << "Receiver: " << reciever<<endl;
-	cout << "Paid Amount: " << transactions.getAmount()<<endl;
+
+	cout << "Receiver: " << reciever << endl;
+	cout << "Paid Amount: " << transactions.getAmount() << endl;
 	cout << "Time: " << TransactionDate.hour << ":" << TransactionDate.min << endl;
 	cout << "Date: " << TransactionDate.month << "/" << TransactionDate.day << "/" << TransactionDate.year << endl;
-	
+
 
 	while (T != "1" && T != "0" || T.length() != 1) {
 		cout << "confirm transaction" << endl << "press 1 to confirm / 0 to delete transaction\n";
@@ -360,8 +362,8 @@ void User::RequestMoney(string& sender, double amount) {
 	bool T;
 
 	map<string, User>::iterator R;
-	 R = System::allUsers.find(sender);
-	User *FindingUser = &R->second;
+	R = System::allUsers.find(sender);
+	User* FindingUser = &R->second;
 
 	if (R == System::allUsers.end()) {
 		cout << "The User is not found" << endl << "Do you want to continue? press 1 / 0 to exit";
@@ -393,7 +395,7 @@ void User::RequestMoney(string& sender, double amount) {
 			exit; //redirect to home page
 		}
 	}
-	else if(FindingUser->getUserName()==UserName)
+	else if (FindingUser->getUserName() == UserName)
 	{
 		cout << "You can not send request to yourself\n";
 		cout << "Do you want to continue? press 1 / 0 to exit";
@@ -408,22 +410,22 @@ void User::RequestMoney(string& sender, double amount) {
 			exit; //redirect to home page
 		}
 	}
-	
+
 
 	else
 	{
-		
+
 		cout << "Request is sent successfully\n";
 		transactions.setAmount(amount);
 		transactions.SetSender(FindingUser->getUserName());
 		transactions.reciever = System::loggedInUser->getUserName();
 		System::allPendingRequests.push_back(transactions);
-		FindingUser->pendingRequests.push(transactions);
+		FindingUser->pendingRequests.push_back(transactions);
 		// display out pending request in system
 	}
 
-	
-	
+
+
 }
 
 
@@ -433,10 +435,10 @@ void User::acceptRequest(Transaction transactions) {
 	transactions.Date = Transaction::getCurrentDateTime();
 	double newBalanceOfReciever = ViewCurrentBalance() - transactions.getAmount();
 	BalanceAfterTransaction(newBalanceOfReciever);
-	
 
 
-	User *FindingUser = System::getUser(transactions.getReciever());
+
+	User* FindingUser = System::getUser(transactions.getReciever());
 
 	double newBalanceOfSender = FindingUser->ViewCurrentBalance() + transactions.getAmount();
 	FindingUser->BalanceAfterTransaction(newBalanceOfSender);
@@ -449,20 +451,20 @@ void User::acceptRequest(Transaction transactions) {
 	System::allPendingRequests.erase(
 		remove(System::allPendingRequests.begin(), System::allPendingRequests.end(), transactions),
 		System::allPendingRequests.end());
-	pendingRequests.pop();
+	pendingRequests.pop_front();
 
 }
 
-void User::addTransactionToHistory( Transaction transaction)
+void User::addTransactionToHistory(Transaction transaction)
 {
-	
-		History.push_back(transaction);
+
+	History.push_back(transaction);
 
 }
 
-void User::addPendingRequest( Transaction transaction)
+void User::addPendingRequest(Transaction transaction)
 {
-		pendingRequests.push(transaction);
+	pendingRequests.push_back(transaction);
 
 }
 
@@ -542,29 +544,29 @@ void User::viewPendingRequests() {
 	if (pendingRequests.empty()) {
 		cout << "No pending requests." << endl;
 	}
-	else 
+	else
 	{
 		while (!pendingRequests.empty()) {
 			int i = 1;
 			Transaction request = pendingRequests.front(); // Get the front element of the queue
-			
+
 			cout << "Request " << (i) << ": Sender: " << request.getReciever() << ", Amount: " << request.getAmount() << endl;
 			cout << "Do you want to Accept(A) or Decline(D) this request? (A/D): ";
 			char choice;
 			cin >> choice;
 			if (choice == 'A' || choice == 'a') {
 				acceptRequest(pendingRequests.front());
-				
+
 				cout << "Request accepted." << endl;
 			}
 
 			else if (choice == 'D' || choice == 'd') {
-				pendingRequests.pop();
+				pendingRequests.pop_front();
 				cout << "Request declined." << endl;
 			}
-			
+
 			i++;
-		
+
 		}
 		if (pendingRequests.empty()) {
 			cout << "No more pending requests." << endl;
@@ -575,5 +577,5 @@ void User::viewPendingRequests() {
 
 
 User::~User(void) {
-	
+
 }
